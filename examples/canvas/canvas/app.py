@@ -510,14 +510,10 @@ class ExampleCanvasApp(toga.App):
         context.write_text(text, self.x_middle - width / 2, self.y_middle, font)
 
     def get_weight(self):
-        if self.bold_switch.value:
-            return BOLD
-        return NORMAL
+        return BOLD if self.bold_switch.value else NORMAL
 
     def get_style(self):
-        if self.italic_switch.value:
-            return ITALIC
-        return NORMAL
+        return ITALIC if self.italic_switch.value else NORMAL
 
     def get_context(self, canvas):
         if self.context_selection.value == STROKE:

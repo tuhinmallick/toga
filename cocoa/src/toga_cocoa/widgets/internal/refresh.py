@@ -221,9 +221,12 @@ class RefreshableScrollView(NSScrollView):
     # Detecting scroll
     @objc_method
     def scrollWheel_(self, event) -> None:
-        if event.phase == NSEventPhaseEnded:
-            if self.refreshTriggered and not self.isRefreshing:
-                self.reload()
+        if (
+            event.phase == NSEventPhaseEnded
+            and self.refreshTriggered
+            and not self.isRefreshing
+        ):
+            self.reload()
 
         send_super(__class__, self, "scrollWheel:", event, argtypes=[c_void_p])
 

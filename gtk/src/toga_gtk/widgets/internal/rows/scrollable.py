@@ -110,13 +110,13 @@ class ScrollableRow(Gtk.ListBoxRow):
         list_height = self.get_allocation().height
         current = adj.get_value()
         step = 1
-        tol = 1e-9
-
         if self._animation_control is not None:
             # Whether the animation is progressing as planned or the user scrolled the list.
             position_change = abs(current - self._animation_control["last_position"])
             # Whether the list size changed.
             size_change = list_height - self._animation_control["list_height"]
+
+            tol = 1e-9
 
             if position_change == 0 or position_change > step + tol or size_change != 0:
                 self._animation_control = None

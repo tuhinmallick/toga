@@ -53,49 +53,49 @@ class ExampleFocusApp(toga.App):
             toga.Command(
                 lambda widget: self.focus_with_label(self.a_button),
                 text="Focus on A",
-                shortcut=toga.Key.MOD_1 + "a",
+                shortcut=f"{toga.Key.MOD_1}a",
                 group=WIDGETS_GROUP,
             ),
             toga.Command(
                 lambda widget: self.focus_with_label(self.b_button),
                 text="Focus on B",
-                shortcut=toga.Key.MOD_1 + "b",
+                shortcut=f"{toga.Key.MOD_1}b",
                 group=WIDGETS_GROUP,
             ),
             toga.Command(
                 lambda widget: self.focus_with_label(self.c_button),
                 text="Focus on C",
-                shortcut=toga.Key.MOD_1 + "c",
+                shortcut=f"{toga.Key.MOD_1}c",
                 group=WIDGETS_GROUP,
             ),
             toga.Command(
                 lambda widget: self.text_input.focus(),
                 text="Focus on text input",
-                shortcut=toga.Key.MOD_1 + "t",
+                shortcut=f"{toga.Key.MOD_1}t",
                 group=WIDGETS_GROUP,
             ),
             toga.Command(
                 lambda widget: self.focus_with_label(self.switch),
                 text="Focus on switch",
-                shortcut=toga.Key.MOD_1 + "s",
+                shortcut=f"{toga.Key.MOD_1}s",
                 group=WIDGETS_GROUP,
             ),
             toga.Command(
                 lambda widget: self.order_focus_by_appearance(),
                 text="Order focus by appearance",
-                shortcut=toga.Key.MOD_1 + "o",
+                shortcut=f"{toga.Key.MOD_1}o",
                 group=FOCUS_ORDER_GROUP,
             ),
             toga.Command(
                 lambda widget: self.order_focus_by_reversed_appearance(),
                 text="Order focus by reversed appearance",
-                shortcut=toga.Key.MOD_1 + "r",
+                shortcut=f"{toga.Key.MOD_1}r",
                 group=FOCUS_ORDER_GROUP,
             ),
             toga.Command(
                 lambda widget: self.shuffle_focus(),
                 text="Shuffle focus order",
-                shortcut=toga.Key.MOD_1 + "f",
+                shortcut=f"{toga.Key.MOD_1}f",
                 group=FOCUS_ORDER_GROUP,
             ),
         )
@@ -114,9 +114,7 @@ class ExampleFocusApp(toga.App):
         self.info_label.text = f"Switch turned {on_off}!"
 
     def on_textinput_gain_focus(self, widget: toga.TextInput):
-        self.info_label.text = "TextInput has previously had focus " "{} times".format(
-            self.text_input_focus_count
-        )
+        self.info_label.text = f"TextInput has previously had focus {self.text_input_focus_count} times"
 
     def on_textinput_lose_focus(self, widget: toga.TextInput):
         self.text_input_focus_count += 1
@@ -147,10 +145,7 @@ class ExampleFocusApp(toga.App):
 
 
 def main():
-    # Application class
-    #   App name and namespace
-    app = ExampleFocusApp("Focus", "org.beeware.widgets.focus")
-    return app
+    return ExampleFocusApp("Focus", "org.beeware.widgets.focus")
 
 
 if __name__ == "__main__":

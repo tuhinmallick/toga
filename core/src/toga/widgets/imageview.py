@@ -45,11 +45,7 @@ class ImageView(Widget):
     @image.setter
     def image(self, image):
 
-        if isinstance(image, str):
-            self._image = Image(image)
-        else:
-            self._image = image
-
+        self._image = Image(image) if isinstance(image, str) else image
         if self._image is not None:
             self._impl.set_image(image)
             self._impl.rehint()

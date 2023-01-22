@@ -111,9 +111,7 @@ class Slider(Widget):
             final = value
         else:
             raise ValueError(
-                "Slider value ({}) is not in range ({}-{})".format(
-                    value, self.min, self.max
-                )
+                f"Slider value ({value}) is not in range ({self.min}-{self.max})"
             )
         self._impl.set_value(final)
         if self.on_change:

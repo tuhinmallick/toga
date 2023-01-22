@@ -35,7 +35,7 @@ class Image:
             if path.suffix == "":
                 # If no suffix is provided in the filename, default to PNG,
                 # and append that suffix to the filename.
-                str_path = str(path) + ".png"
+                str_path = f"{str(path)}.png"
                 filetype = NSBitmapImageFileType.PNG
             else:
                 filetype = {

@@ -63,10 +63,7 @@ class TogaTree(NSOutlineView):
         if item is None:
             # How many root elements are there?
             # If we're starting up, the source may not exist yet.
-            if self.interface.data is not None:
-                return len(self.interface.data)
-            else:
-                return 0
+            return len(self.interface.data) if self.interface.data is not None else 0
         else:
             # How many children does this node have?
             return len(item.attrs["node"])
@@ -101,11 +98,7 @@ class TogaTree(NSOutlineView):
 
         # If the value has an icon, get the _impl.
         # Icons are deferred resources, so we provide the factory.
-        if icon_iface:
-            icon = icon_iface._impl
-        else:
-            icon = None
-
+        icon = icon_iface._impl if icon_iface else None
         # creates a NSTableCellView from interface-builder template (does not exist)
         # or reuses an existing view which is currently not needed for painting
         # returns None (nil) if both fails
@@ -123,7 +116,7 @@ class TogaTree(NSOutlineView):
             tcv.retain()
             tcv.autorelease()
 
-        tcv.setText(str(value))
+        tcv.setText(value)
         if icon:
             tcv.setImage(icon.native)
         else:
@@ -226,10 +219,7 @@ class Tree(Widget):
         # conversion from ObjC string to Python String, create the
         # ObjC string once and cache it.
         self.column_identifiers = {}
-        for i, (heading, accessor) in enumerate(
-            zip(self.interface.headings, self.interface._accessors)
-        ):
-
+        for heading, accessor in zip(self.interface.headings, self.interface._accessors):
             column_identifier = at(accessor)
             self.column_identifiers[id(column_identifier)] = accessor
             column = NSTableColumn.alloc().initWithIdentifier(column_identifier)
@@ -302,7 +292,7 @@ class Tree(Widget):
             selection = []
 
             current_index = self.tree.selectedRowIndexes.firstIndex
-            for i in range(self.tree.selectedRowIndexes.count):
+            for _ in range(self.tree.selectedRowIndexes.count):
                 selection.append(self.tree.itemAtRow(current_index).attrs["node"])
                 current_index = self.tree.selectedRowIndexes.indexGreaterThanIndex(
                     current_index
@@ -311,10 +301,7 @@ class Tree(Widget):
             return selection
         else:
             index = self.tree.selectedRow
-            if index != -1:
-                return self.tree.itemAtRow(index).attrs["node"]
-            else:
-                return None
+            return self.tree.itemAtRow(index).attrs["node"] if index != -1 else None
 
     def set_on_select(self, handler):
         pass

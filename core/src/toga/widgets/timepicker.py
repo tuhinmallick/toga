@@ -84,7 +84,7 @@ class TimePicker(Widget):
 
     def _convert_time(self, value):
         if value is None:
-            return datetime.datetime.today().time().replace(microsecond=0)
+            return datetime.datetime.now().time().replace(microsecond=0)
         elif isinstance(value, datetime.time):
             return value
         elif isinstance(value, datetime.datetime):
@@ -111,10 +111,7 @@ class TimePicker(Widget):
 
     @min_time.setter
     def min_time(self, value):
-        if value is None:
-            self._min_time = None
-        else:
-            self._min_time = self._convert_time(value)
+        self._min_time = None if value is None else self._convert_time(value)
         self._impl.set_min_time(self._min_time)
 
     @property
@@ -130,11 +127,7 @@ class TimePicker(Widget):
 
     @max_time.setter
     def max_time(self, value):
-        if value is None:
-            self._max_time = None
-        else:
-            self._max_time = self._convert_time(value)
-
+        self._max_time = None if value is None else self._convert_time(value)
         self._impl.set_max_time(self._max_time)
 
     @property

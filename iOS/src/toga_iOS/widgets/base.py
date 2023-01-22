@@ -31,11 +31,10 @@ class Widget:
         if self.container:
             if container:
                 raise RuntimeError("Already have a container")
-            else:
-                # existing container should be removed
-                self.constraints = None
-                self._container = None
-                self.native.removeFromSuperview()
+            # existing container should be removed
+            self.constraints = None
+            self._container = None
+            self.native.removeFromSuperview()
         elif container:
             # setting container
             self._container = container
@@ -103,11 +102,7 @@ class Widget:
     # INTERFACE
 
     def add_child(self, child):
-        if self.viewport:
-            # we are the the top level UIView
-            child.container = self
-        else:
-            child.container = self.container
+        child.container = self if self.viewport else self.container
 
     def insert_child(self, index, child):
         self.add_child(child)

@@ -51,28 +51,29 @@ def wrapped_handler(interface, handler, cleanup=None):
     handler, the wrapper function is annotated with the original handler
     function on the `_raw` attribute.
     """
-    if handler:
-        if isinstance(handler, NativeHandler):
-            return handler.native
+    if not handler:
+        return
+    if isinstance(handler, NativeHandler):
+        return handler.native
 
-        def _handler(widget, *args, **kwargs):
-            if asyncio.iscoroutinefunction(handler):
-                asyncio.ensure_future(
-                    handler_with_cleanup(handler, cleanup, interface, *args, **kwargs)
-                )
+    def _handler(widget, *args, **kwargs):
+        if asyncio.iscoroutinefunction(handler):
+            asyncio.ensure_future(
+                handler_with_cleanup(handler, cleanup, interface, *args, **kwargs)
+            )
+        else:
+            result = handler(interface, *args, **kwargs)
+            if inspect.isgenerator(result):
+                asyncio.ensure_future(long_running_task(result, cleanup))
             else:
-                result = handler(interface, *args, **kwargs)
-                if inspect.isgenerator(result):
-                    asyncio.ensure_future(long_running_task(result, cleanup))
-                else:
-                    try:
-                        if cleanup:
-                            cleanup(interface, result)
-                        return result
-                    except Exception as e:
-                        print("Error in handler:", e, file=sys.stderr)
-                        traceback.print_exc()
+                try:
+                    if cleanup:
+                        cleanup(interface, result)
+                    return result
+                except Exception as e:
+                    print("Error in handler:", e, file=sys.stderr)
+                    traceback.print_exc()
 
-        _handler._raw = handler
+    _handler._raw = handler
 
-        return _handler
+    return _handler

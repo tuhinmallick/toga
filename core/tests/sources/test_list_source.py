@@ -125,12 +125,15 @@ class ListSourceTests(TestCase):
     def test_init_with_flat_list_of_objects(self):
         "A list source can be created from a flat list of objects"
 
+
+
         class MyObject:
             def __init__(self, info):
                 self.info = info
 
             def __str__(self):
-                return "string value %s" % self.info
+                return f"string value {self.info}"
+
 
         data = [
             MyObject(True),
@@ -193,10 +196,7 @@ class ListSourceTests(TestCase):
 
         self.assertEqual(len(source), 3)
 
-        result = 0
-        for row in source:
-            result += row.val2
-
+        result = sum(row.val2 for row in source)
         self.assertEqual(result, 666)
 
     def test_clear(self):

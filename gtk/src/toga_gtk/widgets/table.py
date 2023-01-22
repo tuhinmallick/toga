@@ -3,22 +3,17 @@ from .tree import Tree
 
 class Table(Tree):
     def gtk_on_select(self, selection):
-        if self.interface.on_select:
-            if self.interface.multiple_select:
-                tree_model, tree_path = selection.get_selected_rows()
-                if tree_path:
-                    tree_iter = tree_model.get_iter(tree_path[-1])
-                else:
-                    tree_iter = None
-            else:
-                tree_model, tree_iter = selection.get_selected()
+        if not self.interface.on_select:
+            return
+        if self.interface.multiple_select:
+            tree_model, tree_path = selection.get_selected_rows()
+            tree_iter = tree_model.get_iter(tree_path[-1]) if tree_path else None
+        else:
+            tree_model, tree_iter = selection.get_selected()
 
             # Covert the tree iter into the actual row.
-            if tree_iter:
-                row = tree_model.get(tree_iter, 0)[0]
-            else:
-                row = None
-            self.interface.on_select(None, row=row)
+        row = tree_model.get(tree_iter, 0)[0] if tree_iter else None
+        self.interface.on_select(None, row=row)
 
     def change_source(self, source):
         # Temporarily disconnecting the TreeStore improves performance for large

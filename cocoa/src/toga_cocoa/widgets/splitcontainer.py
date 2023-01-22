@@ -21,13 +21,11 @@ class TogaSplitViewDelegate(NSObject):
 
         # Set the splitter positions based on the new weight fractions.
         cumulative = 0.0
-        if self.interface.direction == self.interface.VERTICAL:
-            for i, weight in enumerate(self.interface._weight[:-1]):
-                cumulative += weight
+        for i, weight in enumerate(self.interface._weight[:-1]):
+            cumulative += weight
+            if self.interface.direction == self.interface.VERTICAL:
                 view.setPosition(view.frame.size.width * cumulative, ofDividerAtIndex=i)
-        else:
-            for i, weight in enumerate(self.interface._weight[:-1]):
-                cumulative += weight
+            else:
                 view.setPosition(
                     view.frame.size.height * cumulative, ofDividerAtIndex=i
                 )

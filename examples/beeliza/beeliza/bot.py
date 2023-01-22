@@ -388,8 +388,7 @@ class Eliza:
     def respond(self, input):
         # find a match among keys
         for pattern, responses in self.RESPONSES:
-            match = pattern.match(input)
-            if match:
+            if match := pattern.match(input):
                 # Found a match; randomly choose a response,
                 # and populate it with the captured regex group data.
                 response = random.choice(responses).format(
@@ -398,9 +397,9 @@ class Eliza:
 
                 # fix punctuation
                 if response[-2:] == "?.":
-                    response = response[:-2] + "."
+                    response = f"{response[:-2]}."
                 if response[-2:] == "??":
-                    response = response[:-2] + "?"
+                    response = f"{response[:-2]}?"
                 return response
 
 

@@ -53,7 +53,7 @@ class Context:
         Returns:
             The canvas node. Returns self if this node *is* the canvas node.
         """
-        return self._canvas if self._canvas else self
+        return self._canvas or self
 
     @canvas.setter
     def canvas(self, value):
@@ -374,9 +374,7 @@ class Fill(Context):
         self.preserve = preserve
 
     def __repr__(self):
-        return "{}(color={}, fill_rule={}, preserve={})".format(
-            self.__class__.__name__, self.color, self.fill_rule, self.preserve
-        )
+        return f"{self.__class__.__name__}(color={self.color}, fill_rule={self.fill_rule}, preserve={self.preserve})"
 
     def _draw(self, impl, *args, **kwargs):
         """Used by parent to draw all objects that are part of the context."""
@@ -397,9 +395,7 @@ class Fill(Context):
                 fill_rule = FillRule[fill_rule.upper()]
             except KeyError:
                 raise ValueError(
-                    "fill rule should be one of the followings: {}".format(
-                        ", ".join([value.name.lower() for value in FillRule])
-                    )
+                    f'fill rule should be one of the followings: {", ".join([value.name.lower() for value in FillRule])}'
                 )
         self._fill_rule = fill_rule
 
@@ -409,10 +405,7 @@ class Fill(Context):
 
     @color.setter
     def color(self, value):
-        if value is None:
-            self._color = None
-        else:
-            self._color = parse_color(value)
+        self._color = None if value is None else parse_color(value)
 
 
 class Stroke(Context):
@@ -436,9 +429,7 @@ class Stroke(Context):
         self.line_dash = line_dash
 
     def __repr__(self):
-        return "{}(color={}, line_width={}, line_dash={})".format(
-            self.__class__.__name__, self.color, self.line_width, self.line_dash
-        )
+        return f"{self.__class__.__name__}(color={self.color}, line_width={self.line_width}, line_dash={self.line_dash})"
 
     def _draw(self, impl, *args, **kwargs):
         """Used by parent to draw all objects that are part of the context."""
@@ -455,10 +446,7 @@ class Stroke(Context):
 
     @color.setter
     def color(self, value):
-        if value is None:
-            self._color = None
-        else:
-            self._color = parse_color(value)
+        self._color = None if value is None else parse_color(value)
 
 
 class ClosedPath(Context):
@@ -843,15 +831,7 @@ class BezierCurveTo:
         self.y = y
 
     def __repr__(self):
-        return "{}(cp1x={}, cp1y={}, cp2x={}, cp2y={}, x={}, y={})".format(
-            self.__class__.__name__,
-            self.cp1x,
-            self.cp1y,
-            self.cp2x,
-            self.cp2y,
-            self.x,
-            self.y,
-        )
+        return f"{self.__class__.__name__}(cp1x={self.cp1x}, cp1y={self.cp1y}, cp2x={self.cp2x}, cp2y={self.cp2y}, x={self.x}, y={self.y})"
 
     def _draw(self, impl, *args, **kwargs):
         """Draw the drawing object using the implementation."""
@@ -883,9 +863,7 @@ class QuadraticCurveTo:
         self.y = y
 
     def __repr__(self):
-        return "{}(cpx={}, cpy={}, x={}, y={})".format(
-            self.__class__.__name__, self.cpx, self.cpy, self.x, self.y
-        )
+        return f"{self.__class__.__name__}(cpx={self.cpx}, cpy={self.cpy}, x={self.x}, y={self.y})"
 
     def _draw(self, impl, *args, **kwargs):
         """Draw the drawing object using the implementation."""
@@ -934,20 +912,7 @@ class Ellipse:
         self.anticlockwise = anticlockwise
 
     def __repr__(self):
-        return (
-            "{}(x={}, y={}, radiusx={}, radiusy={}, "
-            "rotation={}, startangle={}, endangle={}, anticlockwise={})".format(
-                self.__class__.__name__,
-                self.x,
-                self.y,
-                self.radiusx,
-                self.radiusy,
-                self.rotation,
-                self.startangle,
-                self.endangle,
-                self.anticlockwise,
-            )
-        )
+        return f"{self.__class__.__name__}(x={self.x}, y={self.y}, radiusx={self.radiusx}, radiusy={self.radiusy}, rotation={self.rotation}, startangle={self.startangle}, endangle={self.endangle}, anticlockwise={self.anticlockwise})"
 
     def _draw(self, impl, *args, **kwargs):
         """Draw the drawing object using the implementation."""
@@ -997,15 +962,7 @@ class Arc:
         self.anticlockwise = anticlockwise
 
     def __repr__(self):
-        return "{}(x={}, y={}, radius={}, startangle={}, endangle={}, anticlockwise={})".format(
-            self.__class__.__name__,
-            self.x,
-            self.y,
-            self.radius,
-            self.startangle,
-            self.endangle,
-            self.anticlockwise,
-        )
+        return f"{self.__class__.__name__}(x={self.x}, y={self.y}, radius={self.radius}, startangle={self.startangle}, endangle={self.endangle}, anticlockwise={self.anticlockwise})"
 
     def _draw(self, impl, *args, **kwargs):
         """Draw the drawing object using the implementation."""
@@ -1043,9 +1000,7 @@ class Rect:
         self.height = height
 
     def __repr__(self):
-        return "{}(x={}, y={}, width={}, height={})".format(
-            self.__class__.__name__, self.x, self.y, self.width, self.height
-        )
+        return f"{self.__class__.__name__}(x={self.x}, y={self.y}, width={self.width}, height={self.height})"
 
     def _draw(self, impl, *args, **kwargs):
         """Draw the drawing object using the implementation."""
@@ -1155,9 +1110,7 @@ class WriteText:
         self.font = font
 
     def __repr__(self):
-        return "{}(text={}, x={}, y={}, font={})".format(
-            self.__class__.__name__, self.text, self.x, self.y, self.font
-        )
+        return f"{self.__class__.__name__}(text={self.text}, x={self.x}, y={self.y}, font={self.font})"
 
     def _draw(self, impl, *args, **kwargs):
         """Draw the drawing object using the implementation."""

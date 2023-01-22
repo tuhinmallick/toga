@@ -185,6 +185,6 @@ class RefreshButton(ParentPosition):
             self._show_top_refresh()
             return
 
-        if not is_at_top and not is_at_bottom:
+        if not is_at_top:
             self._hide_all()
             return

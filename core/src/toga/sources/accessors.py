@@ -57,14 +57,14 @@ def build_accessors(headings, accessors):
             result = [
                 accessors[h] if h in accessors else to_accessor(h) for h in headings
             ]
-        else:
-            if len(headings) != len(accessors):
-                raise ValueError("Number of accessors must match number of headings")
-
+        elif len(headings) == len(accessors):
             result = [
                 a if a is not None else to_accessor(h)
                 for h, a in zip(headings, accessors)
             ]
+        else:
+            raise ValueError("Number of accessors must match number of headings")
+
     else:
         result = [to_accessor(h) for h in headings]
 

@@ -100,9 +100,11 @@ class DetailedList(Widget):
         self.native.Items.Clear()
 
     def get_selection(self):
-        if not self.native.SelectedIndices.Count:
-            return None
-        return self.interface.data[self.native.SelectedIndices[0]]
+        return (
+            self.interface.data[self.native.SelectedIndices[0]]
+            if self.native.SelectedIndices.Count
+            else None
+        )
 
     def set_on_delete(self, handler):
         pass

@@ -49,10 +49,10 @@ class Font:
 
                 full_name = "{family}{weight}{style}".format(
                     family=family,
-                    weight=(" " + self.interface.weight.title())
+                    weight=f" {self.interface.weight.title()}"
                     if self.interface.weight is not NORMAL
                     else "",
-                    style=(" " + self.interface.style.title())
+                    style=f" {self.interface.style.title()}"
                     if self.interface.style is not NORMAL
                     else "",
                 )

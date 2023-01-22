@@ -40,17 +40,18 @@ class WebView(Widget):
         pass
 
     def gtk_on_load_changed(self, widget, load_event, *args):
-        if load_event == WebKit2.LoadEvent.FINISHED:
-            if self.interface.on_webview_load:
-                self.interface.on_webview_load(self.interface)
+        if (
+            load_event == WebKit2.LoadEvent.FINISHED
+            and self.interface.on_webview_load
+        ):
+            self.interface.on_webview_load(self.interface)
 
     def gtk_on_key(self, widget, event, *args):
         # key-press-event on WebKit on GTK double-sends events, but they have
         # the same time key. Check for it before we register the press.
         if event.time > self._last_key_time and self.interface.on_key_down:
             self._last_key_time = event.time
-            toga_event = toga_key(event)
-            if toga_event:
+            if toga_event := toga_key(event):
                 self.interface.on_key_down(self.interface, **toga_event)
 
     def get_url(self):

@@ -224,10 +224,7 @@ class App:
             # name of the folder.
             try:
                 main_module_pkg = sys.modules["__main__"].__package__
-                if main_module_pkg == "":
-                    self._app_name = None
-                else:
-                    self._app_name = main_module_pkg
+                self._app_name = None if main_module_pkg == "" else main_module_pkg
             except KeyError:
                 # We use the existence of a __main__ module as a proxy for
                 # being in test conditions. This isn't *great*, but the __main__
@@ -269,54 +266,30 @@ class App:
 
         # If a name has been provided, use it; otherwise, look to
         # the module metadata. However, a name *must* be provided.
-        if formal_name:
-            self._formal_name = formal_name
-        else:
-            self._formal_name = self.metadata["Formal-Name"]
-
+        self._formal_name = formal_name or self.metadata["Formal-Name"]
         if self._formal_name is None:
             raise RuntimeError("Toga application must have a formal name")
 
         # If an app_id has been provided, use it; otherwise, look to
         # the module metadata. However, an app_id *must* be provied
-        if app_id:
-            self._app_id = app_id
-        else:
-            self._app_id = self.metadata.get("App-ID", None)
-
+        self._app_id = app_id or self.metadata.get("App-ID", None)
         if self._app_id is None:
             raise RuntimeError("Toga application must have an App ID")
 
         # If an author has been provided, use it; otherwise, look to
         # the module metadata.
-        if author:
-            self._author = author
-        else:
-            self._author = self.metadata.get("Author", None)
-
+        self._author = author or self.metadata.get("Author", None)
         # If a version has been provided, use it; otherwise, look to
         # the module metadata.
-        if version:
-            self._version = version
-        else:
-            self._version = self.metadata.get("Version", None)
-
+        self._version = version or self.metadata.get("Version", None)
         # If a home_page has been provided, use it; otherwise, look to
         # the module metadata.
-        if home_page:
-            self._home_page = home_page
-        else:
-            self._home_page = self.metadata.get("Home-page", None)
-
+        self._home_page = home_page or self.metadata.get("Home-page", None)
         # If a description has been provided, use it; otherwise, look to
         # the module metadata.
-        if description:
-            self._description = description
-        else:
-            self._description = self.metadata.get("Summary", None)
-
+        self._description = description or self.metadata.get("Summary", None)
         # Set the application DOM ID; create an ID if one hasn't been provided.
-        self._id = id if id else identifier(self)
+        self._id = id or identifier(self)
 
         # Get a platform factory, and a paths instance from the factory.
         self.factory = get_platform_factory()
@@ -324,11 +297,7 @@ class App:
 
         # If an icon (or icon name) has been explicitly provided, use it;
         # otherwise, the icon will be based on the app name.
-        if icon:
-            self.icon = icon
-        else:
-            self.icon = f"resources/{self.app_name}"
-
+        self.icon = icon or f"resources/{self.app_name}"
         self.commands = CommandSet()
 
         self._startup_method = startup

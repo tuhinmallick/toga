@@ -41,9 +41,7 @@ class ScrollContainer(Widget):
                 + scrollable_content.interface.style.padding_bottom
             )
             # pad the scrollview for the statusbar offset
-            padding_vertical = (
-                padding_vertical + scrollable_content.viewport.statusbar_height
-            )
+            padding_vertical += scrollable_content.viewport.statusbar_height
         else:
             content_height = self.native.frame.size.height
 

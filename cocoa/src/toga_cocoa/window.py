@@ -27,7 +27,7 @@ from toga_cocoa.libs import (
 
 
 def toolbar_identifier(cmd):
-    return "ToolbarItem-%s" % id(cmd)
+    return f"ToolbarItem-{id(cmd)}"
 
 
 class CocoaViewport:
@@ -59,18 +59,12 @@ class WindowDelegate(NSObject):
 
     @objc_method
     def windowDidResize_(self, notification) -> None:
-        if self.interface.content:
-            # print()
-            # print("Window resize", (
-            #   notification.object.contentView.frame.size.width,
-            #   notification.object.contentView.frame.size.height
-            # ))
-            if (
-                notification.object.contentView.frame.size.width > 0.0
-                and notification.object.contentView.frame.size.height > 0.0
-            ):
-                # Set the window to the new size
-                self.interface.content.refresh()
+        if self.interface.content and (
+            notification.object.contentView.frame.size.width > 0.0
+            and notification.object.contentView.frame.size.height > 0.0
+        ):
+            # Set the window to the new size
+            self.interface.content.refresh()
 
     ######################################################################
     # Toolbar delegate methods
@@ -187,7 +181,7 @@ class Window:
                 self._toolbar_items[toolbar_identifier(cmd)] = cmd
 
         self._toolbar_native = NSToolbar.alloc().initWithIdentifier_(
-            "Toolbar-%s" % id(self)
+            f"Toolbar-{id(self)}"
         )
         self._toolbar_native.setDelegate_(self.delegate)
 

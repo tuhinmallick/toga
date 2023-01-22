@@ -49,11 +49,7 @@ class MessageDialog(BaseDialog):
         return_value = dialog.run()
         dialog.destroy()
 
-        if success_result:
-            result = return_value == success_result
-        else:
-            result = None
-
+        result = return_value == success_result if success_result else None
         # def completion_handler(self, return_value: bool) -> None:
         if self.on_result:
             self.on_result(self, result)
@@ -150,8 +146,8 @@ class FileDialog(BaseDialog):
         if file_types:
             for file_type in file_types:
                 filter_filetype = Gtk.FileFilter()
-                filter_filetype.set_name("." + file_type + " files")
-                filter_filetype.add_pattern("*." + file_type)
+                filter_filetype.set_name(f".{file_type} files")
+                filter_filetype.add_pattern(f"*.{file_type}")
                 dialog.add_filter(filter_filetype)
 
         if multiselect:

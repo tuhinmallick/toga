@@ -60,9 +60,7 @@ class TestValidators(unittest.TestCase):
             self.assertEqual(
                 error_message,
                 validator(invalid_input),
-                msg='"{}" error message is different than expected.'.format(
-                    invalid_input
-                ),
+                msg=f'"{invalid_input}" error message is different than expected.',
             )
 
     def test_validate_minimum_length(self):

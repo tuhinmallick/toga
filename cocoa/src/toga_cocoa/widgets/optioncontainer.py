@@ -87,13 +87,13 @@ class OptionContainer(Widget):
                 self._disabled_tabs.remove(index)
             except KeyError:
                 pass
-        else:
-            if tabview == self.native.selectedTabViewItem:
-                # Don't allow disable a selected tab
-                raise self.interface.OptionException(
-                    "Currently selected option cannot be disabled"
-                )
+        elif tabview == self.native.selectedTabViewItem:
+            # Don't allow disable a selected tab
+            raise self.interface.OptionException(
+                "Currently selected option cannot be disabled"
+            )
 
+        else:
             self._disabled_tabs.add(index)
         tabview._setTabEnabled(enabled)
 

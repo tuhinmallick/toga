@@ -18,18 +18,11 @@ class TextInputApp(toga.App):
         self.number_input.enabled = False
 
         # Update the labels with the extracted values
-        self.text_label.text = "Text content: {}; {}".format(
-            self.text_input.value,
-            self.text_input_placeholder.value,
-        )
+        self.text_label.text = f"Text content: {self.text_input.value}; {self.text_input_placeholder.value}"
 
-        self.password_label.text = "Your password is {}: {}".format(
-            "valid" if self.password_input.is_valid else "invalid",
-            self.password_input.value,
-        )
+        self.password_label.text = f'Your password is {"valid" if self.password_input.is_valid else "invalid"}: {self.password_input.value}'
 
-        number = self.number_input.value
-        if number:
+        if number := self.number_input.value:
             self.number_label.text = f"Double the number is: {number * 2}"
         else:
             self.number_label.text = "You didn't enter a number"
@@ -139,7 +132,7 @@ class TextInputApp(toga.App):
                 contains.add("digits")
             else:
                 contains.add("special characters")
-        return "Password contains: {}".format(", ".join(contains))
+        return f'Password contains: {", ".join(contains)}'
 
 
 def main():

@@ -20,10 +20,9 @@ class App:
         formal_name = self.interface.formal_name
 
         self.interface.commands.add(
-            # ---- Help menu ----------------------------------
             toga.Command(
                 lambda _: self.interface.about(),
-                "About " + formal_name,
+                f"About {formal_name}",
                 group=toga.Group.HELP,
             ),
             toga.Command(
@@ -40,7 +39,7 @@ class App:
         self.interface.startup()
 
     def _create_submenu(self, group, items):
-        submenu = create_element(
+        return create_element(
             "li",
             classes=["nav-item", "dropdown"],
             children=[
@@ -64,7 +63,6 @@ class App:
                 ),
             ],
         )
-        return submenu
 
     def create_menus(self):
         self._menu_groups = {}
@@ -73,10 +71,7 @@ class App:
         for cmd in self.interface.commands:
             if cmd == toga.GROUP_BREAK:
                 submenu = None
-            elif cmd == toga.SECTION_BREAK:
-                # TODO - add a section break
-                pass
-            else:
+            elif cmd != toga.SECTION_BREAK:
                 # TODO - this doesn't handle submenus properly;
                 # all menu items will appear in their root group.
                 submenu = self._menu_groups.setdefault(cmd.group, [])

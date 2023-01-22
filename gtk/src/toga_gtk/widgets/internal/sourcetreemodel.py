@@ -122,9 +122,7 @@ class SourceTreeModel(GObject.Object, Gtk.TreeModel):
 
     def do_get_column_type(self, index_):
         """Gtk.TreeModel."""
-        if index_ == 0:
-            return object
-        return self.columns[index_ - 1]["type"]
+        return object if index_ == 0 else self.columns[index_ - 1]["type"]
 
     def do_get_flags(self):
         """Gtk.TreeModel."""
@@ -170,10 +168,7 @@ class SourceTreeModel(GObject.Object, Gtk.TreeModel):
 
     def do_iter_children(self, parent):
         """Gtk.TreeModel."""
-        if parent is None:
-            r = self.source
-        else:
-            r = self._get_user_data(parent)
+        r = self.source if parent is None else self._get_user_data(parent)
         if self._row_has_child(r, 0):
             return (True, self._create_iter(user_data=r[0]))
         return (False, Gtk.TreeIter(stamp=-1))
@@ -184,8 +179,7 @@ class SourceTreeModel(GObject.Object, Gtk.TreeModel):
             return len(self.source) > 0
         if iter_.stamp == self.stamp:
             r = self._get_user_data(iter_)
-            ret = self._row_has_child(r, 0)
-            return ret
+            return self._row_has_child(r, 0)
         return False
 
     def do_iter_n_children(self, iter_):
@@ -196,19 +190,14 @@ class SourceTreeModel(GObject.Object, Gtk.TreeModel):
             r = self._get_user_data(iter_)
         else:
             r = None
-        if self._row_has_child(r, 0):
-            return len(r)
-        return 0
+        return len(r) if self._row_has_child(r, 0) else 0
 
     def do_iter_next(self, iter_):
         """Gtk.TreeModel."""
         if iter_ is not None and iter_.stamp == self.stamp:
             r = self._get_user_data(iter_)
             if r is not None:
-                if self.is_tree:
-                    parent = r._parent or self.source
-                else:
-                    parent = self.source
+                parent = r._parent or self.source if self.is_tree else self.source
                 if len(parent) and r is not parent[-1]:
                     try:
                         index = self.index_in_parent[r]
@@ -225,10 +214,7 @@ class SourceTreeModel(GObject.Object, Gtk.TreeModel):
         if iter_ is not None and iter_.stamp == self.stamp:
             r = self._get_user_data(iter_)
             if r is not None:
-                if self.is_tree:
-                    parent = r._parent or self.source
-                else:
-                    parent = self.source
+                parent = r._parent or self.source if self.is_tree else self.source
                 if len(parent) and r is not parent[0]:
                     try:
                         index = self.index_in_parent[r]
@@ -278,11 +264,10 @@ class SourceTreeModel(GObject.Object, Gtk.TreeModel):
         s = self.source
         if self.is_tree:
             for i in indices:
-                if s.can_have_children():
-                    if i < len(s):
-                        s = s[i]
-                    else:
-                        return None
+                if not s.can_have_children():
+                    return None
+                if i < len(s):
+                    s = s[i]
                 else:
                     return None
             return s
@@ -296,14 +281,13 @@ class SourceTreeModel(GObject.Object, Gtk.TreeModel):
     def _get_indices(self, row):
         if row is None or self.source is None:
             return None
-        if self.is_tree:
-            indices = []
-            while row not in (None, self.source):
-                indices.insert(0, self.index_in_parent[row])
-                row = row._parent
-            return indices
-        else:
+        if not self.is_tree:
             return [self.source.index(row)]
+        indices = []
+        while row not in (None, self.source):
+            indices.insert(0, self.index_in_parent[row])
+            row = row._parent
+        return indices
 
     def _row_has_child(self, row, n):
         return (

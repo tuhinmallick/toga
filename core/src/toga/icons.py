@@ -11,11 +11,7 @@ class cachedicon:
     def __get__(self, obj, owner):
         # If you ask for Icon.CACHED_ICON, obj is None, and owner is the Icon class
         # If you ask for self.CACHED_ICON, obj is self, from which we can get the class.
-        if obj is None:
-            cls = owner
-        else:
-            cls = obj.__class__
-
+        cls = owner if obj is None else obj.__class__
         try:
             # Look for a __CACHED_ICON attribute on the class
             value = getattr(cls, f"__{self.f.__name__}")

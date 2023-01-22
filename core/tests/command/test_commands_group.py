@@ -76,7 +76,7 @@ class TestCommandsGroup(unittest.TestCase):
         middle = toga.Group("B", parent=top)
         bottom = toga.Group("A", parent=middle)
         groups = [top, middle, bottom]
-        for i in range(0, 2):
+        for i in range(2):
             for j in range(i + 1, 3):
                 self.assertTrue(groups[i].is_parent_of(groups[j]))
                 self.assertTrue(groups[j].is_child_of(groups[i]))

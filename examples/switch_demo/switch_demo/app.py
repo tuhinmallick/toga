@@ -42,10 +42,7 @@ class SwitchApp(toga.App):
 
 
 def main():
-    # Application class
-    #   App name and namespace
-    app = SwitchApp("Switches", "org.beeware.helloworld")
-    return app
+    return SwitchApp("Switches", "org.beeware.helloworld")
 
 
 if __name__ == "__main__":

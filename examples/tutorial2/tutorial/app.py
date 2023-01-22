@@ -4,7 +4,7 @@ from toga.style.pack import COLUMN, Pack
 
 def button_handler(widget):
     print("button handler")
-    for i in range(0, 10):
+    for i in range(10):
         print("hello", i)
         yield 1
     print("done", i)
@@ -38,16 +38,16 @@ def build(app):
     brutus_icon = "icons/brutus"
     cricket_icon = "icons/cricket-72.png"
 
-    data = [("root%s" % i, "value %s" % i) for i in range(1, 100)]
+    data = [(f"root{i}", f"value {i}") for i in range(1, 100)]
 
     left_container = toga.Table(headings=["Hello", "World"], data=data)
 
     right_content = toga.Box(style=Pack(direction=COLUMN, padding_top=50))
 
-    for b in range(0, 10):
+    for b in range(10):
         right_content.add(
             toga.Button(
-                "Hello world %s" % b,
+                f"Hello world {b}",
                 on_press=button_handler,
                 style=Pack(width=200, padding=20),
             )
@@ -102,7 +102,7 @@ def build(app):
         action3,
         text="Action 3",
         tooltip="Perform action 3",
-        shortcut=toga.Key.MOD_1 + "k",
+        shortcut=f"{toga.Key.MOD_1}k",
         icon=cricket_icon,
         order=3,
     )

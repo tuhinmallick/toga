@@ -37,10 +37,7 @@ class DividerApp(toga.App):
 
 
 def main():
-    # Application class
-    #   App name and namespace
-    app = DividerApp("Dividers", "org.beeware.helloworld")
-    return app
+    return DividerApp("Dividers", "org.beeware.helloworld")
 
 
 if __name__ == "__main__":

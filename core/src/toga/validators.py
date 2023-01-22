@@ -9,7 +9,7 @@ class BooleanValidator:
         self.allow_empty = allow_empty
 
     def __call__(self, input_string: str):
-        if self.allow_empty and input_string == "":
+        if self.allow_empty and not input_string:
             return None
         return None if self.is_valid(input_string) else self.error_message
 
@@ -35,7 +35,7 @@ class CountValidator:
         self.allow_empty = allow_empty
 
     def __call__(self, input_string: str):
-        if self.allow_empty and input_string == "":
+        if self.allow_empty and not input_string:
             return None
         actual_count = self.count(input_string)
         if actual_count == 0 and self.compare_count != 0:
@@ -61,21 +61,17 @@ class LengthBetween(BooleanValidator):
         allow_empty: bool = True,
     ):
         if error_message is None:
-            error_message = "Input should be between {} and {} characters".format(
-                min_value, max_value
+            error_message = (
+                f"Input should be between {min_value} and {max_value} characters"
             )
         super().__init__(error_message=error_message, allow_empty=allow_empty)
         self.min_value = min_value
         self.max_value = max_value
 
     def is_valid(self, input_string: str):
-        if self.min_value:
-            if len(input_string) < self.min_value:
-                return False
-        if self.max_value:
-            if len(input_string) > self.max_value:
-                return False
-        return True
+        if self.min_value and len(input_string) < self.min_value:
+            return False
+        return not self.max_value or len(input_string) <= self.max_value
 
 
 class MinLength(LengthBetween):
@@ -83,9 +79,7 @@ class MinLength(LengthBetween):
         self, length: int, error_message: Optional[str] = None, allow_empty: bool = True
     ):
         if error_message is None:
-            error_message = "Input is too short (length should be at least {})".format(
-                length
-            )
+            error_message = f"Input is too short (length should be at least {length})"
         super().__init__(
             min_value=length,
             max_value=None,
@@ -99,9 +93,7 @@ class MaxLength(LengthBetween):
         self, length: int, error_message: Optional[str] = None, allow_empty: bool = True
     ):
         if error_message is None:
-            error_message = "Input is too long (length should be at most {})".format(
-                length
-            )
+            error_message = f"Input is too long (length should be at most {length})"
         super().__init__(
             min_value=None,
             max_value=length,
@@ -166,12 +158,8 @@ class Contains(CountValidator):
                     + f' or "{substrings[-1]}"'
                 )
             expected_existence = f"Input should contain {substrings_string}"
-            expected_non_existence = "Input should not contain {}".format(
-                substrings_string
-            )
-            expected_count = "Input should contain {} exactly {} times".format(
-                substrings_string, compare_count
-            )
+            expected_non_existence = f"Input should not contain {substrings_string}"
+            expected_count = f"Input should contain {substrings_string} exactly {compare_count} times"
 
         super().__init__(
             compare_count=compare_count,
@@ -229,11 +217,7 @@ class ContainsUppercase(CountValidator):
         else:
             expected_existence = "Input should contain at least one uppercase character"
             expected_non_existence = "Input should not contain uppercase characters"
-            expected_count = (
-                "Input should contain exactly {} uppercase characters".format(
-                    compare_count
-                )
-            )
+            expected_count = f"Input should contain exactly {compare_count} uppercase characters"
 
         super().__init__(
             compare_count=compare_count,
@@ -259,11 +243,7 @@ class ContainsLowercase(CountValidator):
         else:
             expected_existence = "Input should contain at least one lowercase character"
             expected_non_existence = "Input should not contain lowercase characters"
-            expected_count = (
-                "Input should contain exactly {} lowercase characters".format(
-                    compare_count
-                )
-            )
+            expected_count = f"Input should contain exactly {compare_count} lowercase characters"
 
         super().__init__(
             compare_count=compare_count,
@@ -289,9 +269,7 @@ class ContainsDigit(CountValidator):
         else:
             expected_existence = "Input should contain at least one digit"
             expected_non_existence = "Input should not contain digits"
-            expected_count = "Input should contain exactly {} digits".format(
-                compare_count
-            )
+            expected_count = f"Input should contain exactly {compare_count} digits"
 
         super().__init__(
             compare_count=compare_count,
@@ -318,9 +296,7 @@ class ContainsSpecial(CountValidator):
             expected_existence = "Input should contain at least one special character"
             expected_non_existence = "Input should not contain specials characters"
             expected_count = (
-                "Input should contain exactly {} special characters".format(
-                    compare_count
-                )
+                f"Input should contain exactly {compare_count} special characters"
             )
 
         super().__init__(

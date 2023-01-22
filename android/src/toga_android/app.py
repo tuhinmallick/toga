@@ -92,7 +92,7 @@ class TogaApp(IPythonApp):
 
         # create option menu
         for cmd in self._impl.interface.commands:
-            if cmd == toga.SECTION_BREAK or cmd == toga.GROUP_BREAK:
+            if cmd in [toga.SECTION_BREAK, toga.GROUP_BREAK]:
                 continue
             if cmd in self._impl.interface.main_window.toolbar:
                 continue  # do not show toolbar commands in the option menu (except when overflowing)
@@ -111,17 +111,16 @@ class TogaApp(IPythonApp):
                     groupkey = group.key
                     if groupkey in menulist:
                         menugroup = menulist[groupkey]
+                    elif group.text == toga.Group.COMMANDS.text:
+                        menulist[groupkey] = menu
+                        menugroup = menu
                     else:
-                        if group.text == toga.Group.COMMANDS.text:
-                            menulist[groupkey] = menu
-                            menugroup = menu
-                        else:
-                            itemid += 1
-                            order = Menu.NONE if group.order is None else group.order
-                            menugroup = parentmenu.addSubMenu(
-                                Menu.NONE, itemid, order, group.text
-                            )  # groupId, itemId, order, title
-                            menulist[groupkey] = menugroup
+                        itemid += 1
+                        order = Menu.NONE if group.order is None else group.order
+                        menugroup = parentmenu.addSubMenu(
+                            Menu.NONE, itemid, order, group.text
+                        )  # groupId, itemId, order, title
+                        menulist[groupkey] = menugroup
                     parentmenu = menugroup
             # create menu item
             itemid += 1
@@ -138,7 +137,7 @@ class TogaApp(IPythonApp):
         # create toolbar actions
         if self._impl.interface.main_window:
             for cmd in self._impl.interface.main_window.toolbar:
-                if cmd == toga.SECTION_BREAK or cmd == toga.GROUP_BREAK:
+                if cmd in [toga.SECTION_BREAK, toga.GROUP_BREAK]:
                     continue
                 itemid += 1
                 order = Menu.NONE if cmd.order is None else cmd.order
@@ -150,11 +149,10 @@ class TogaApp(IPythonApp):
                 )  # toolbar button / item in options menu on overflow
                 menuitem.setEnabled(cmd.enabled)
                 if cmd.icon:
-                    icon = Drawable.createFromPath(str(cmd.icon._impl.path))
-                    if icon:
+                    if icon := Drawable.createFromPath(str(cmd.icon._impl.path)):
                         menuitem.setIcon(icon)
                     else:
-                        print("Could not create icon: " + str(cmd.icon._impl.path))
+                        print(f"Could not create icon: {str(cmd.icon._impl.path)}")
                 self.menuitem_mapping[
                     itemid
                 ] = cmd  # store itemid for use in onOptionsItemSelected
@@ -190,7 +188,7 @@ class App:
         self.interface.startup()
 
     def open_document(self, fileURL):
-        print("Can't open document %s (yet)" % fileURL)
+        print(f"Can't open document {fileURL} (yet)")
 
     def main_loop(self):
         # In order to support user asyncio code, start the Python/Android cooperative event loop.

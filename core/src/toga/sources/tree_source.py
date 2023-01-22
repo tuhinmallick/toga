@@ -16,10 +16,7 @@ class Node(Row):
         return self._children[index]
 
     def __len__(self):
-        if self.can_have_children():
-            return len(self._children)
-        else:
-            return 0
+        return len(self._children) if self.can_have_children() else 0
 
     def can_have_children(self):
         return self._children is not None

@@ -39,10 +39,10 @@ class TogaDemo(toga.App):
         left_container.add("Tree", left_tree)
 
         right_content = toga.Box(style=Pack(direction=COLUMN))
-        for b in range(0, 10):
+        for b in range(10):
             right_content.add(
                 toga.Button(
-                    "Hello world %s" % b,
+                    f"Hello world {b}",
                     on_press=self.button_handler,
                     style=Pack(padding=20),
                 )
@@ -78,9 +78,9 @@ class TogaDemo(toga.App):
 
     def button_handler(self, widget):
         print("button press")
-        for i in range(0, 10):
+        for i in range(10):
             yield 1
-            print("still running... (iteration %s)" % i)
+            print(f"still running... (iteration {i})")
 
     def action1(self, widget):
         self.main_window.info_dialog("Toga", "THIS! IS! TOGA!!")

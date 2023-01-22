@@ -101,11 +101,7 @@ class DatePicker(Widget):
 
     @min_date.setter
     def min_date(self, value):
-        if value is None:
-            self._min_date = None
-        else:
-            self._min_date = self._convert_date(value)
-
+        self._min_date = None if value is None else self._convert_date(value)
         self._impl.set_min_date(self._min_date)
 
     @property
@@ -119,11 +115,7 @@ class DatePicker(Widget):
 
     @max_date.setter
     def max_date(self, value):
-        if value is None:
-            self._max_date = None
-        else:
-            self._max_date = self._convert_date(value)
-
+        self._max_date = None if value is None else self._convert_date(value)
         self._impl.set_max_date(self._max_date)
 
     @property

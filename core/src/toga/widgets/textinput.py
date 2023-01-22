@@ -115,10 +115,7 @@ class TextInput(Widget):
 
     @placeholder.setter
     def placeholder(self, value):
-        if value is None:
-            self._placeholder = ""
-        else:
-            self._placeholder = str(value)
+        self._placeholder = "" if value is None else str(value)
         self._impl.set_placeholder(value)
 
     @property
@@ -132,10 +129,7 @@ class TextInput(Widget):
 
     @value.setter
     def value(self, value):
-        if value is None:
-            v = ""
-        else:
-            v = str(value)
+        v = "" if value is None else str(value)
         self._impl.set_value(v)
 
     @property
@@ -171,10 +165,7 @@ class TextInput(Widget):
 
     @validators.setter
     def validators(self, validators):
-        if validators is None:
-            self._validators = []
-        else:
-            self._validators = validators
+        self._validators = [] if validators is None else validators
         self.validate()
 
     @property

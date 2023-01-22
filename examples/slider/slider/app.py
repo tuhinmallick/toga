@@ -118,8 +118,8 @@ class SliderApp(toga.App):
 
     def my_discrete_on_change(self, slider):
         # get the current value of the slider with `slider.value`
-        self.discrete_slider_value_label.text = "The slider value changed to {}".format(
-            slider.value
+        self.discrete_slider_value_label.text = (
+            f"The slider value changed to {slider.value}"
         )
 
     def scared_on_press(self, slider):

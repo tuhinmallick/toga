@@ -33,11 +33,7 @@ class MessageDialog(BaseDialog):
 
         return_value = WinForms.MessageBox.Show(message, title, buttons, icon)
 
-        if success_result:
-            result = return_value == success_result
-        else:
-            result = None
-
+        result = return_value == success_result if success_result else None
         # def completion_handler(self, return_value: bool) -> None:
         if self.on_result:
             self.on_result(self, result)

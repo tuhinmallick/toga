@@ -85,7 +85,7 @@ class ExampleTestCommandApp(toga.App):
             self.action3,
             text="Action 3",
             tooltip="Perform action 3",
-            shortcut=toga.Key.MOD_1 + "k",
+            shortcut=f"{toga.Key.MOD_1}k",
             icon=cricket_icon_256,
             group=toga.Group.COMMANDS,
             order=4,

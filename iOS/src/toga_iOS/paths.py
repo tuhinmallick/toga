@@ -13,13 +13,9 @@ class Paths:
     def app(self):
         try:
             return Path(sys.modules["__main__"].__file__).parent
-        except KeyError:
+        except (KeyError, AttributeError):
             # If we're running in test conditions,
             # there is no __main__ module.
-            return Path.cwd()
-        except AttributeError:
-            # If we're running at an interactive prompt,
-            # the __main__ module isn't file-based.
             return Path.cwd()
 
     @property

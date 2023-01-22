@@ -37,11 +37,7 @@ class Selection(Widget):
         self.native.setSelection(self._indexByItem[item])
 
     def get_selected_item(self):
-        selected = self.native.getSelectedItem()
-        if selected:
-            return str(selected)
-        else:
-            return None
+        return str(selected) if (selected := self.native.getSelectedItem()) else None
 
     def remove_all_items(self):
         self.adapter.clear()

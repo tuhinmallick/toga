@@ -14,9 +14,8 @@ class Row:
 
     def __setattr__(self, attr, value):
         super().__setattr__(attr, value)
-        if attr in self._attrs:
-            if self._source is not None:
-                self._source._notify("change", item=self)
+        if attr in self._attrs and self._source is not None:
+            self._source._notify("change", item=self)
 
 
 class ListSource(Source):
@@ -34,8 +33,7 @@ class ListSource(Source):
         super().__init__()
         self._accessors = accessors.copy()
         self._data = []
-        for value in data:
-            self._data.append(self._create_row(value))
+        self._data.extend(self._create_row(value) for value in data)
 
     ######################################################################
     # Methods required by the ListSource interface
