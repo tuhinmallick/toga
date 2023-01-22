@@ -20,13 +20,8 @@ class ImageView(Widget):
             else:
                 self.native.Image = self.interface._image._impl.native
         else:
-            width = 0
-            height = 0
-            if self.interface.style.width:
-                width = self.interface.style.width
-            if self.interface.style.height:
-                height = self.interface.style.height
-
+            width = self.interface.style.width or 0
+            height = self.interface.style.height or 0
             self.native.Size = Size(width, height)
             # Setting background color to white is not necessary, but it shows the
             # picture frame

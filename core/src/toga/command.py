@@ -43,11 +43,10 @@ class Group:
                     "Cannot specify both `label` and `text`; "
                     "`label` has been deprecated, use `text`"
                 )
-            else:
-                warnings.warn(
-                    "Group.label has been renamed Group.text", DeprecationWarning
-                )
-                text = label
+            warnings.warn(
+                "Group.label has been renamed Group.text", DeprecationWarning
+            )
+            text = label
         elif text is NOT_PROVIDED:
             # This would be raised by Python itself; however, we need to use a placeholder
             # value as part of the migration from text->value.
@@ -60,10 +59,10 @@ class Group:
         ##################################################################
 
         self.text = text
-        self.order = order if order else 0
+        self.order = order or 0
         if parent is None and section is not None:
             raise ValueError("Section cannot be set without parent group")
-        self.section = section if section else 0
+        self.section = section or 0
 
         # First initialization needed for later
         self._parent = None
@@ -80,10 +79,7 @@ class Group:
             self._root = self
             return
         if parent == self or self.is_parent_of(parent):
-            error_message = (
-                "Cannot set {} to be a parent of {} "
-                "because it causes a cyclic parenting."
-            ).format(parent.text, self.text)
+            error_message = f"Cannot set {parent.text} to be a parent of {self.text} because it causes a cyclic parenting."
             raise ValueError(error_message)
         self._parent = parent
         self._root = parent.root
@@ -97,9 +93,7 @@ class Group:
             return False
         if child.parent is None:
             return False
-        if child.parent == self:
-            return True
-        return self.is_parent_of(child.parent)
+        return True if child.parent == self else self.is_parent_of(child.parent)
 
     def is_child_of(self, parent):
         return parent.is_parent_of(self)
@@ -114,15 +108,11 @@ class Group:
         return other < self
 
     def __eq__(self, other):
-        if other is None:
-            return False
-        return self.key == other.key
+        return False if other is None else self.key == other.key
 
     def __repr__(self):
         parent_string = "None" if self.parent is None else self.parent.text
-        return "<Group text={} order={} parent={}>".format(
-            self.text, self.order, parent_string
-        )
+        return f"<Group text={self.text} order={self.order} parent={parent_string}>"
 
     @property
     def key(self):
@@ -135,9 +125,7 @@ class Group:
     @property
     def path(self):
         "A list containing the chain of groups that contain this group"
-        if self.parent is None:
-            return [self]
-        return [*self.parent.path, self]
+        return [self] if self.parent is None else [*self.parent.path, self]
 
     ######################################################################
     # 2022-07: Backwards compatibility
@@ -234,11 +222,10 @@ class Command:
                     "Cannot specify both `label` and `text`; "
                     "`label` has been deprecated, use `text`"
                 )
-            else:
-                warnings.warn(
-                    "Command.label has been renamed Command.text", DeprecationWarning
-                )
-                text = label
+            warnings.warn(
+                "Command.label has been renamed Command.text", DeprecationWarning
+            )
+            text = label
         elif text is NOT_PROVIDED:
             # This would be raised by Python itself; however, we need to use a placeholder
             # value as part of the migration from text->value.
@@ -257,9 +244,9 @@ class Command:
         self.tooltip = tooltip
         self.icon = icon
 
-        self.group = group if group else Group.COMMANDS
-        self.section = section if section else 0
-        self.order = order if order else 0
+        self.group = group or Group.COMMANDS
+        self.section = section or 0
+        self.order = order or 0
 
         self.factory = get_platform_factory()
         self._impl = self.factory.Command(interface=self)
@@ -309,12 +296,7 @@ class Command:
         return other < self
 
     def __repr__(self):
-        return "<Command text={} group={} section={} order={}>".format(
-            self.text,
-            self.group,
-            self.section,
-            self.order,
-        )
+        return f"<Command text={self.text} group={self.group} section={self.section} order={self.order}>"
 
     ######################################################################
     # 2022-07: Backwards compatibility

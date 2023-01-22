@@ -132,7 +132,7 @@ class Window(object):
         if self._content:
             min_width, preferred_width = self.content._width_hint
             min_height, preferred_height = self.content._height_hint
-            print("SET MIN to %sx%s" % (min_width, min_height))
+            print(f"SET MIN to {min_width}x{min_height}")
             info.ptMinTrackSize.x = int(min_width)
             info.ptMinTrackSize.y = int(min_height)
 

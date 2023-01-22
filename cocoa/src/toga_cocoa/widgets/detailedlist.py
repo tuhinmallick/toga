@@ -85,11 +85,7 @@ class TogaList(NSTableView):
     @objc_method
     def tableViewSelectionDidChange_(self, notification) -> None:
         index = notification.object.selectedRow
-        if index == -1:
-            selection = None
-        else:
-            selection = self.interface.data[index]
-
+        selection = None if index == -1 else self.interface.data[index]
         if self.interface.on_select:
             self.interface.on_select(self.interface, row=selection)
 
@@ -168,10 +164,7 @@ class DetailedList(Widget):
 
     def get_selection(self):
         index = self.detailedlist.selectedRow
-        if index != -1:
-            return self.interface.data[index]
-        else:
-            return None
+        return self.interface.data[index] if index != -1 else None
 
     def set_on_select(self, handler):
         pass

@@ -55,11 +55,10 @@ copyright = "2013, Russell Keith-Magee"
 #
 # The full version, including alpha/beta/rc tags.
 with open("../core/src/toga/__init__.py", encoding="utf8") as version_file:
-    version_match = re.search(
+    if version_match := re.search(
         r"^__version__ = ['\"]([^'\"]*)['\"]", version_file.read(), re.M
-    )
-    if version_match:
-        release = version_match.group(1)
+    ):
+        release = version_match[1]
     else:
         raise RuntimeError("Unable to find version string.")
 

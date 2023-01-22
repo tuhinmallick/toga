@@ -19,9 +19,7 @@ class ExampleOptionContainerApp(toga.App):
         self._refresh_select()
 
     def _refresh_select(self):
-        items = []
-        for i in range(len(self.optioncontainer.content)):
-            items.append(str(i))
+        items = [str(i) for i in range(len(self.optioncontainer.content))]
         self.select_option.items = items
 
     def on_add_option(self, button):
@@ -73,10 +71,7 @@ class ExampleOptionContainerApp(toga.App):
             self.optioncontainer.current_tab -= 1
 
     def on_select_tab(self, widget, option):
-        self.selected_label.text = "Tab {} has been chosen: {}".format(
-            option.index,
-            option.text,
-        )
+        self.selected_label.text = f"Tab {option.index} has been chosen: {option.text}"
 
     def startup(self):
         # Set up main window

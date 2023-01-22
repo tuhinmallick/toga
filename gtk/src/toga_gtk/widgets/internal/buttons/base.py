@@ -12,17 +12,13 @@ class ParentPosition:
     def is_parent_at_top(self):
         value = self.adj.get_value()
         lower = self.adj.get_lower()
-        is_at_top = value == lower
-
-        return is_at_top
+        return value == lower
 
     def is_parent_at_bottom(self):
         page_size = self.adj.get_page_size()
         value = self.adj.get_value()
         upper = self.adj.get_upper()
-        is_at_bottom = value + page_size == upper
-
-        return is_at_bottom
+        return value + page_size == upper
 
     def is_parent_scrolled(self):
         is_at_top = self._is_parent_at_top()

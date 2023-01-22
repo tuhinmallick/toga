@@ -14,9 +14,8 @@ class Button(Widget):
         self.set_enabled(self.interface._enabled)
 
     def winforms_click(self, sender, event):
-        if self.container:
-            if self.interface.on_press:
-                self.interface.on_press(self.interface)
+        if self.container and self.interface.on_press:
+            self.interface.on_press(self.interface)
 
     def set_text(self, text):
         self.native.Text = self.interface.text

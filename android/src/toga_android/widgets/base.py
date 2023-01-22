@@ -55,11 +55,10 @@ class Widget:
         if self.container:
             if container:
                 raise RuntimeError("Already have a container")
-            else:
-                # container is set to None, removing self from the container.native
-                self._container.native.removeView(self.native)
-                self._container.native.invalidate()
-                self._container = None
+            # container is set to None, removing self from the container.native
+            self._container.native.removeView(self.native)
+            self._container.native.invalidate()
+            self._container = None
         elif container:
             self._container = container
             if self.native:
@@ -120,11 +119,7 @@ class Widget:
     # INTERFACE
 
     def add_child(self, child):
-        if self.viewport:
-            # we are the top level widget
-            child.container = self
-        else:
-            child.container = self.container
+        child.container = self if self.viewport else self.container
 
     def insert_child(self, index, child):
         self.add_child(child)

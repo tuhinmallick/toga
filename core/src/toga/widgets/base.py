@@ -72,9 +72,7 @@ class Widget(Node):
         ######################################################################
         # End backwards compatibility.
         ######################################################################
-        super().__init__(
-            style=style if style else Pack(), applicator=TogaApplicator(self)
-        )
+        super().__init__(style=style or Pack(), applicator=TogaApplicator(self))
 
         self._id = str(id) if id else str(identifier(self))
         self._window = None
@@ -214,7 +212,7 @@ class Widget(Node):
             elif self._app != app:
                 # raise an error when we already have an app and attempt to override it
                 # with a different app
-                raise ValueError("Widget %s is already associated with an App" % self)
+                raise ValueError(f"Widget {self} is already associated with an App")
             else:
                 # If app is the same as the previous app, return
                 return

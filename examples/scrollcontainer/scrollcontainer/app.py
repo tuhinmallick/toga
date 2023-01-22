@@ -9,7 +9,7 @@ class Item(toga.Box):
 
         row = toga.Box(style=Pack(direction=ROW))
         for x in range(10):
-            label = toga.Label(text + ", " + str(x), style=Pack(padding_right=10))
+            label = toga.Label(f"{text}, {str(x)}", style=Pack(padding_right=10))
             row.add(label)
         self.add(row)
 

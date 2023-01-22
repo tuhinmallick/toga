@@ -41,8 +41,7 @@ class Slider(Widget):
         android_slider_max = toga_tick_count - 1
         tick_factor = (maximum - minimum) / android_slider_max
         progress_scaled = self.native.getProgress() * tick_factor
-        result = progress_scaled + minimum
-        return result
+        return progress_scaled + minimum
 
     def set_value(self, value):
         minimum, maximum = self.interface.range

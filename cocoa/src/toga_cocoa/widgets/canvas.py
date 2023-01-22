@@ -156,10 +156,7 @@ class Canvas(Widget):
     ):
         # Cocoa Box Widget is using a flipped coordinate system, so clockwise
         # is actually anticlockwise
-        if anticlockwise:
-            clockwise = 1
-        else:
-            clockwise = 0
+        clockwise = 1 if anticlockwise else 0
         core_graphics.CGContextAddArc(
             draw_context, x, y, radius, startangle, endangle, clockwise
         )
@@ -183,7 +180,7 @@ class Canvas(Widget):
         if radiusx >= radiusy:
             self.scale(1, radiusy / radiusx, draw_context)
             self.arc(0, 0, radiusx, startangle, endangle, anticlockwise, draw_context)
-        elif radiusy > radiusx:
+        else:
             self.scale(radiusx / radiusy, 1, draw_context)
             self.arc(0, 0, radiusy, startangle, endangle, anticlockwise, draw_context)
         self.rotate(rotation, draw_context)
@@ -288,11 +285,10 @@ class Canvas(Widget):
         bitmap.setSize(self.native.bounds.size)
         self.native.cacheDisplayInRect(self.native.bounds, toBitmapImageRep=bitmap)
 
-        data = bitmap.representationUsingType(
+        return bitmap.representationUsingType(
             NSBitmapImageFileType.PNG,
             properties=None,
         )
-        return data
 
     # Rehint
 

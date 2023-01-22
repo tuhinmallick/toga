@@ -149,10 +149,7 @@ class DetailedList(Widget):
 
     def get_selection(self):
         item_impl = self.list_box.get_selected_row()
-        if item_impl is None:
-            return None
-        else:
-            return item_impl.interface
+        return None if item_impl is None else item_impl.interface
 
     def scroll_to_row(self, row: int):
         item = self.store[row]

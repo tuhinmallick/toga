@@ -273,9 +273,7 @@ class Canvas(Box):
     def native_fill_rule(self, fill_rule):
         if fill_rule == FillRule.EVENODD:
             return FillMode.Alternate
-        if fill_rule == FillRule.NONZERO:
-            return FillMode.Winding
-        return None
+        return FillMode.Winding if fill_rule == FillRule.NONZERO else None
 
     def stroke(self, color, line_width, line_dash, draw_context, *args, **kwargs):
         pen = self.create_pen(color=color, line_width=line_width, line_dash=line_dash)
@@ -317,8 +315,8 @@ class Canvas(Box):
             WinForms.TextRenderer.MeasureText(line, font._impl.native)
             for line in text.splitlines()
         ]
-        width = max([size.Width for size in sizes])
-        height = sum([size.Height for size in sizes])
+        width = max(size.Width for size in sizes)
+        height = sum(size.Height for size in sizes)
         return (
             self._points_to_pixels(width),
             self._points_to_pixels(height),

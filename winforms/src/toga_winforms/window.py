@@ -12,9 +12,7 @@ class WinFormsViewport:
     @property
     def width(self):
         # Treat `native=None` as a 0x0 viewport
-        if self.native is None:
-            return 0
-        return self.native.ClientSize.Width
+        return 0 if self.native is None else self.native.ClientSize.Width
 
     @property
     def height(self):
@@ -65,9 +63,7 @@ class Window:
     def create_toolbar(self):
         self.toolbar_native = WinForms.ToolStrip()
         for cmd in self.interface.toolbar:
-            if cmd == GROUP_BREAK:
-                item = WinForms.ToolStripSeparator()
-            elif cmd == SECTION_BREAK:
+            if cmd in [GROUP_BREAK, SECTION_BREAK]:
                 item = WinForms.ToolStripSeparator()
             else:
                 if cmd.icon is not None:
@@ -124,7 +120,7 @@ class Window:
             # The main menu and toolbar are normal in-window controls;
             # however, they shouldn't be removed if window content is
             # removed.
-            if control != self.native.MainMenuStrip and control != self.toolbar_native:
+            if control not in [self.native.MainMenuStrip, self.toolbar_native]:
                 has_content = True
                 self.native.Controls.Remove(control)
 

@@ -9,14 +9,14 @@ class ExampleNumberInputApp(toga.App):
     # Button callback functions
     def do_stuff(self, widget, **kwargs):
         if self.ni1:
-            self.label.text = "You entered following value: " + str(self.ni1.value)
+            self.label.text = f"You entered following value: {str(self.ni1.value)}"
 
     def do_clear(self, widget, **kwargs):
         self.label.text = "Ready."
 
     def handle_numberinput(self, widget):
         if self.ni1:
-            self.label.text = "You entered following value: " + str(self.ni1.value)
+            self.label.text = f"You entered following value: {str(self.ni1.value)}"
 
     def startup(self):
         # Set up main window

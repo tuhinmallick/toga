@@ -63,11 +63,10 @@ class Button(Widget):
                     "Cannot specify both `label` and `text`; "
                     "`label` has been deprecated, use `text`"
                 )
-            else:
-                warnings.warn(
-                    "Button.label has been renamed Button.text", DeprecationWarning
-                )
-                text = label
+            warnings.warn(
+                "Button.label has been renamed Button.text", DeprecationWarning
+            )
+            text = label
         elif text is NOT_PROVIDED:
             # This would be raised by Python itself; however, we need to use a placeholder
             # value as part of the migration from text->value.
@@ -94,10 +93,7 @@ class Button(Widget):
 
     @text.setter
     def text(self, value):
-        if value is None:
-            self._text = ""
-        else:
-            self._text = str(value)
+        self._text = "" if value is None else str(value)
         self._impl.set_text(value)
         self._impl.rehint()
 

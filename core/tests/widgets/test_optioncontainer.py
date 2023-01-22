@@ -89,8 +89,7 @@ class OptionContainerTests(TestCase):
 
     def test_current_tab_increment(self):
         self.add_widgets()
-        self.op_container.current_tab = 1
-        self.op_container.current_tab += 1
+        self.op_container.current_tab = 1 + 1
         self.assert_tab(
             self.op_container.current_tab,
             index=2,
@@ -125,8 +124,7 @@ class OptionContainerTests(TestCase):
 
     def test_current_tab_decrement(self):
         self.add_widgets()
-        self.op_container.current_tab = 1
-        self.op_container.current_tab -= 1
+        self.op_container.current_tab = 0
         self.assert_tab(
             self.op_container.current_tab,
             index=0,

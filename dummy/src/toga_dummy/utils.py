@@ -228,9 +228,7 @@ class TestCase(unittest.TestCase):
             self.assertIn(
                 action,
                 _MODULES[_module]._actions,
-                "Action {} from {} not performed. Actions were: {}".format(
-                    action, _module, sorted(_MODULES[_module]._actions.keys())
-                ),
+                f"Action {action} from {_module} not performed. Actions were: {sorted(_MODULES[_module]._actions.keys())}",
             )
         except AttributeError:
             self.fail(f"Module {_module} is not a logged object")
@@ -275,19 +273,12 @@ class TestCase(unittest.TestCase):
 
             # None of the recorded actions match the test data.
             self.fail(
-                "Action {} not performed by {} with {}. Actions were: {}".format(
-                    action,
-                    _module,
-                    test_data,
-                    sorted(_MODULES[_module]._actions[action].items()),
-                )
+                f"Action {action} not performed by {_module} with {test_data}. Actions were: {sorted(_MODULES[_module]._actions[action].items())}"
             )
         except KeyError:
             # The action wasn't performed
             self.fail(
-                "Action {} not performed by {}. Actions were: {}".format(
-                    action, _module, sorted(_MODULES[_module]._actions.keys())
-                )
+                f"Action {action} not performed by {_module}. Actions were: {sorted(_MODULES[_module]._actions.keys())}"
             )
         except AttributeError:
             self.fail(f"Widget {_module} is not a logged object")
@@ -413,9 +404,7 @@ class TestCase(unittest.TestCase):
             self.assertIn(
                 action,
                 _widget._impl._actions,
-                "Action {} not performed by {}. Actions were: {}".format(
-                    action, _widget, sorted(_widget._impl._actions.keys())
-                ),
+                f"Action {action} not performed by {_widget}. Actions were: {sorted(_widget._impl._actions.keys())}",
             )
         except AttributeError:
             self.fail(f"Widget {_widget} is not a logged object")
@@ -471,19 +460,12 @@ class TestCase(unittest.TestCase):
 
             # None of the recorded actions match the test data.
             self.fail(
-                "Action {} not performed by {} with {}. Actions were: {}".format(
-                    action,
-                    _widget,
-                    test_data,
-                    sorted(_widget._impl._actions[action].items()),
-                )
+                f"Action {action} not performed by {_widget} with {test_data}. Actions were: {sorted(_widget._impl._actions[action].items())}"
             )
         except KeyError:
             # The action wasn't performed
             self.fail(
-                "Action {} not performed by {}. Actions were: {}".format(
-                    action, _widget, sorted(_widget._impl._actions.keys())
-                )
+                f"Action {action} not performed by {_widget}. Actions were: {sorted(_widget._impl._actions.keys())}"
             )
         except AttributeError:
             self.fail(f"Widget {_widget} is not a logged object")

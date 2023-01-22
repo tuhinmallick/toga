@@ -38,8 +38,7 @@ class ExampleExamplesOverviewApp(toga.App):
         readme_path = row.path / "README.rst"
 
         try:
-            with open(readme_path) as f:
-                readme_text = f.read()
+            readme_text = Path(readme_path).read_text()
         except OSError:
             readme_text = "README could not be loaded"
 

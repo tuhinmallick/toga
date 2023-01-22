@@ -60,11 +60,7 @@ class Font:
                 font = NSFont.fontWithName(family, size=self.interface.size)
 
                 if font is None:
-                    print(
-                        "Unable to load font: {}pt {}".format(
-                            self.interface.size, family
-                        )
-                    )
+                    print(f"Unable to load font: {self.interface.size}pt {family}")
 
                 # Convert the base font definition into a font with all the desired traits.
                 attributes_mask = 0
@@ -83,20 +79,16 @@ class Font:
 
                 full_name = "{family}{weight}{style}".format(
                     family=family,
-                    weight=(" " + self.interface.weight.title())
+                    weight=f" {self.interface.weight.title()}"
                     if self.interface.weight is not NORMAL
                     else "",
-                    style=(" " + self.interface.style.title())
+                    style=f" {self.interface.style.title()}"
                     if self.interface.style is not NORMAL
                     else "",
                 )
 
                 if font is None:
-                    print(
-                        "Unable to load font: {}pt {}".format(
-                            self.interface.size, full_name
-                        )
-                    )
+                    print(f"Unable to load font: {self.interface.size}pt {full_name}")
                 else:
                     _FONT_CACHE[self.interface] = font
 

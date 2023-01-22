@@ -144,9 +144,7 @@ class CanvasTests(TestCase):
         alpha = 0.8
         subradius = radius * (2 / 3.0 - 0.1)
 
-        with self.testing_canvas.fill(
-            color="rgba(1, 0, 0, " + str(alpha) + ")"
-        ) as fill1:
+        with self.testing_canvas.fill(color=f"rgba(1, 0, 0, {alpha})") as fill1:
             ellipse1 = fill1.ellipse(
                 xc + radius / 3.0 * cos(pi * 0.5),
                 yc - radius / 3.0 * sin(pi * 0.5),
@@ -166,9 +164,7 @@ class CanvasTests(TestCase):
         )
         self.assertActionPerformedWith(self.testing_canvas, "fill")
 
-        with self.testing_canvas.fill(
-            color="rgba(0, 1, 0, " + str(alpha) + ")"
-        ) as fill2:
+        with self.testing_canvas.fill(color=f"rgba(0, 1, 0, {alpha})") as fill2:
             ellipse2 = fill2.ellipse(
                 xc + radius / 3.0 * cos(pi * (0.5 + 2 / 0.3)),
                 yc - radius / 3.0 * sin(pi * (0.5 + 2 / 0.3)),
@@ -186,9 +182,7 @@ class CanvasTests(TestCase):
         )
         self.assertActionPerformedWith(self.testing_canvas, "fill")
 
-        with self.testing_canvas.fill(
-            color="rgba(0, 0, 1, " + str(alpha) + ")"
-        ) as fill3:
+        with self.testing_canvas.fill(color=f"rgba(0, 0, 1, {alpha})") as fill3:
             ellipse3 = fill3.ellipse(
                 xc + radius / 3.0 * cos(pi * (0.5 + 4 / 0.3)),
                 yc - radius / 3.0 * sin(pi * (0.5 + 4 / 0.3)),

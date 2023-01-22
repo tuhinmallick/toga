@@ -18,10 +18,7 @@ class TogaOnTouchListener(View__OnTouchListener):
         super().__init__()
 
     def onTouch(self, view, motion_event):
-        if self.is_scrolling_enabled:
-            return view.onTouchEvent(motion_event)
-        else:
-            return True
+        return view.onTouchEvent(motion_event) if self.is_scrolling_enabled else True
 
 
 class ScrollContainer(Widget):

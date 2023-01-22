@@ -64,11 +64,7 @@ class TogaTable(NSTableView):
 
         # If the value has an icon, get the _impl.
         # Icons are deferred resources, so we provide the factory.
-        if icon_iface:
-            icon = icon_iface._impl
-        else:
-            icon = None
-
+        icon = icon_iface._impl if icon_iface else None
         # creates a NSTableCellView from interface-builder template (does not exist)
         # or reuses an existing view which is currently not needed for painting
         # returns None (nil) if both fails
@@ -109,12 +105,12 @@ class TogaTable(NSTableView):
 
     @objc_method
     def tableViewSelectionDidChange_(self, notification) -> None:
-        if notification.object.selectedRow == -1:
-            selected = None
-        else:
-            selected = self.interface.data[notification.object.selectedRow]
-
         if self.interface.on_select:
+            selected = (
+                None
+                if notification.object.selectedRow == -1
+                else self.interface.data[notification.object.selectedRow]
+            )
             self.interface.on_select(self.interface, row=selected)
 
     # 2021-09-04: Commented out this method because it appears to be a
@@ -144,19 +140,19 @@ class TogaTable(NSTableView):
     # target methods
     @objc_method
     def onDoubleClick_(self, sender) -> None:
-        if self.clickedRow == -1:
-            clicked = None
-        else:
-            clicked = self.interface.data[self.clickedRow]
-
         if self.interface.on_double_click:
+            clicked = (
+                None
+                if self.clickedRow == -1
+                else self.interface.data[self.clickedRow]
+            )
             self.interface.on_double_click(self.interface, row=clicked)
 
 
 class Table(Widget):
     def create(self):
 
-        self._view_for_row = dict()
+        self._view_for_row = {}
 
         # Create a table view, and put it in a scroll view.
         # The scroll view is the native, because it's the outer container.
@@ -229,7 +225,7 @@ class Table(Widget):
             selection = []
 
             current_index = self.table.selectedRowIndexes.firstIndex
-            for i in range(self.table.selectedRowIndexes.count):
+            for _ in range(self.table.selectedRowIndexes.count):
                 selection.append(self.interface.data[current_index])
                 current_index = self.table.selectedRowIndexes.indexGreaterThanIndex(
                     current_index
@@ -238,10 +234,7 @@ class Table(Widget):
             return selection
         else:
             index = self.table.selectedRow
-            if index != -1:
-                return self.interface.data[index]
-            else:
-                return None
+            return self.interface.data[index] if index != -1 else None
 
     def set_on_select(self, handler):
         pass

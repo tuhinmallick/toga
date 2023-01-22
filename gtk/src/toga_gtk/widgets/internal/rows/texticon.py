@@ -68,15 +68,10 @@ class TextIconRow(HiddenButtonsRow):
         # factory no longer used
         if factory:
             warnings.warn("The factory argument is no longer used.", DeprecationWarning)
-        ######################################################################
-        # End backwards compatibility.
-        ######################################################################
-
         if getattr(row, "icon") is None:
             return None
-        else:
-            dpr = self.get_scale_factor()
-            return getattr(row.icon._impl, "native_" + str(32 * dpr))
+        dpr = self.get_scale_factor()
+        return getattr(row.icon._impl, f"native_{str(32 * dpr)}")
 
     @staticmethod
     def markup(row):

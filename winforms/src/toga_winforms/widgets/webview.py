@@ -74,30 +74,29 @@ class WebView(Widget):
 
             except Exception:
                 traceback.print_exc()
-        else:
-            if isinstance(
+        elif isinstance(
                 args.InitializationException, WebView2RuntimeNotFoundException
             ):
-                print("Could not find the Microsoft Edge WebView2 Runtime.")
-                if self.native._edge_runtime_available is None:
-                    # The initialize message is sent twice on failure.
-                    # We only want to show the dialog once, so track that we
-                    # know the runtime is missing.
-                    self.native._edge_runtime_available = False
-                    WinForms.MessageBox.Show(
-                        "The Microsoft Edge WebView2 Runtime is not installed. "
-                        "Web content will not be displayed.\n\n"
-                        "Click OK to download the WebView2 Evergreen Runtime "
-                        "Bootstrapper from Microsoft.",
-                        "Missing Edge Webview2 runtime",
-                        WinForms.MessageBoxButtons.OK,
-                        WinForms.MessageBoxIcon.Error,
-                    )
-                    webbrowser.open(
-                        "https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section"
-                    )
-            else:
-                print(args.InitializationException)
+            print("Could not find the Microsoft Edge WebView2 Runtime.")
+            if self.native._edge_runtime_available is None:
+                # The initialize message is sent twice on failure.
+                # We only want to show the dialog once, so track that we
+                # know the runtime is missing.
+                self.native._edge_runtime_available = False
+                WinForms.MessageBox.Show(
+                    "The Microsoft Edge WebView2 Runtime is not installed. "
+                    "Web content will not be displayed.\n\n"
+                    "Click OK to download the WebView2 Evergreen Runtime "
+                    "Bootstrapper from Microsoft.",
+                    "Missing Edge Webview2 runtime",
+                    WinForms.MessageBoxButtons.OK,
+                    WinForms.MessageBoxIcon.Error,
+                )
+                webbrowser.open(
+                    "https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section"
+                )
+        else:
+            print(args.InitializationException)
 
     def winforms_navigation_completed(self, sender, args):
         if self.interface.on_webview_load:
@@ -130,11 +129,8 @@ class WebView(Widget):
     def set_user_agent(self, value):
         user_agent = (
             value
-            if value
-            else (
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                "(KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46"
-            )
+            or "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46"
         )
         if self.native.CoreWebView2:
             self.native.CoreWebView2.Settings.UserAgent = user_agent

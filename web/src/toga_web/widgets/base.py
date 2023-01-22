@@ -35,7 +35,7 @@ class Widget:
 
         classes = ["toga", self.interface.__class__.__name__.lower()] + classes
 
-        native = create_element(
+        return create_element(
             tag,
             id=f"toga_{self.interface.id}",
             classes=classes,
@@ -44,8 +44,6 @@ class Widget:
             children=children,
             **properties,
         )
-
-        return native
 
     def create(self):
         raise NotImplementedError()

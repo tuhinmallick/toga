@@ -11,11 +11,7 @@ except ImportError:
     # If we're on Linux, Gtk *should* be available. If it isn't, make
     # Gtk an object... but in such a way that every test will fail,
     # because the object isn't actually the Gtk interface.
-    if sys.platform == "linux":
-        Gtk = object()
-    else:
-        Gtk = None
-
+    Gtk = object() if sys.platform == "linux" else None
 import toga
 
 from .utils import TreeModelListener

@@ -34,9 +34,8 @@ class TogaTextField(NSTextField):
         # Cocoa gives and then immediately revokes focus when the widget
         # is first displayed. Set a local attribute on the first *loss*
         # of focus, and only trigger Toga events when that attribute exists.
-        if hasattr(self, "_configured"):
-            if self.interface.on_gain_focus:
-                self.interface.on_gain_focus(self.interface)
+        if hasattr(self, "_configured") and self.interface.on_gain_focus:
+            self.interface.on_gain_focus(self.interface)
         return send_super(__class__, self, "becomeFirstResponder")
 
     @objc_method
@@ -83,10 +82,7 @@ class TextInput(Widget):
             self.native.font = font._impl.native
 
     def set_color(self, color):
-        if color:
-            self.native.textColor = native_color(color)
-        else:
-            self.native.textColor = NSColor.labelColor
+        self.native.textColor = native_color(color) if color else NSColor.labelColor
 
     def get_value(self):
         return str(self.native.stringValue)

@@ -69,11 +69,10 @@ class Switch(Widget):
                     "Cannot specify both `label` and `text`; "
                     "`label` has been deprecated, use `text`"
                 )
-            else:
-                warnings.warn(
-                    "Switch.label has been renamed Switch.text", DeprecationWarning
-                )
-                text = label
+            warnings.warn(
+                "Switch.label has been renamed Switch.text", DeprecationWarning
+            )
+            text = label
         elif text is NOT_PROVIDED:
             # This would be raised by Python itself; however, we need to use a placeholder
             # value as part of the migration from text->value.
@@ -88,12 +87,11 @@ class Switch(Widget):
                     "Cannot specify both `on_toggle` and `on_change`; "
                     "`on_toggle` has been deprecated, use `on_change`"
                 )
-            else:
-                warnings.warn(
-                    "Switch.on_toggle has been renamed Switch.on_change",
-                    DeprecationWarning,
-                )
-                on_change = on_toggle
+            warnings.warn(
+                "Switch.on_toggle has been renamed Switch.on_change",
+                DeprecationWarning,
+            )
+            on_change = on_toggle
 
         # is_on replaced with value
         if is_on is not None:
@@ -135,10 +133,7 @@ class Switch(Widget):
 
     @text.setter
     def text(self, value):
-        if value is None:
-            self._text = ""
-        else:
-            self._text = str(value)
+        self._text = "" if value is None else str(value)
         self._impl.set_text(value)
         self._impl.rehint()
 

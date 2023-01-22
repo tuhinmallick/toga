@@ -55,9 +55,7 @@ def win_font_family(value):
             return FontFamily(value)
         except ArgumentException:
             print(
-                "Unable to load font-family '{}', loading '{}' instead".format(
-                    value, SystemFonts.DefaultFont.FontFamily.Name
-                )
+                f"Unable to load font-family '{value}', loading '{SystemFonts.DefaultFont.FontFamily.Name}' instead"
             )
             return SystemFonts.DefaultFont.FontFamily
 

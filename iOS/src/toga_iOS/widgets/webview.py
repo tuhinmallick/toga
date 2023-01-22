@@ -45,12 +45,10 @@ class WebView(Widget):
         pass
 
     def get_dom(self):
-        html = self.native.DOMDocument.documentElement.outerHTML
-        return html
+        return self.native.DOMDocument.documentElement.outerHTML
 
     def get_url(self):
-        url = self.native.URL
-        if url:
+        if url := self.native.URL:
             return str(url)
 
     def set_url(self, value):
@@ -64,11 +62,8 @@ class WebView(Widget):
     def set_user_agent(self, value):
         user_agent = (
             value
-            if value
-            else (
-                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 "
-                "(KHTML, like Gecko) Version/10.1.2 Safari/603.3.8"
-            )
+            or "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 "
+            "(KHTML, like Gecko) Version/10.1.2 Safari/603.3.8"
         )
         self.native.customUserAgent = user_agent
 

@@ -23,13 +23,9 @@ class MainWindow(Window):
     def winforms_FormClosing(self, sender, event):
         # Differentiate between the handling that occurs when the user
         # requests the app to exit, and the actual application exiting.
-        if not self.interface.app._impl._is_exiting:
-            # If there's an event handler, process it. The decision to
-            # actually exit the app will be processed in the on_exit handler.
-            # If there's no exit handler, assume the close/exit can proceed.
-            if self.interface.app.on_exit:
-                self.interface.app.on_exit(self.interface.app)
-                event.Cancel = True
+        if not self.interface.app._impl._is_exiting and self.interface.app.on_exit:
+            self.interface.app.on_exit(self.interface.app)
+            event.Cancel = True
 
 
 class App:
@@ -66,11 +62,8 @@ class App:
                 win_version.Major == 10 and win_version.Build < 15063
             ):
                 shcore.SetProcessDpiAwareness(True)
-            # Represents Windows 10 Build 1703 and beyond which should use
-            # SetProcessDpiAwarenessContext(-2)
-            elif win_version.Major == 10 and win_version.Build >= 15063:
+            elif win_version.Major == 10:
                 user32.SetProcessDpiAwarenessContext(-2)
-            # Any other version of windows should use SetProcessDPIAware()
             else:
                 user32.SetProcessDPIAware()
 
@@ -104,11 +97,10 @@ class App:
                 group=toga.Group.HELP,
             ),
             toga.Command(None, "Preferences", group=toga.Group.FILE),
-            # Quit should always be the last item, in a section on it's own
             toga.Command(
                 lambda _: self.interface.exit(),
-                "Exit " + self.interface.name,
-                shortcut=Key.MOD_1 + "q",
+                f"Exit {self.interface.name}",
+                shortcut=f"{Key.MOD_1}q",
                 group=toga.Group.FILE,
                 section=sys.maxsize,
             ),
@@ -311,10 +303,10 @@ class DocumentApp(App):
             toga.Command(
                 lambda w: self.open_file,
                 text="Open...",
-                shortcut=Key.MOD_1 + "o",
+                shortcut=f"{Key.MOD_1}o",
                 group=toga.Group.FILE,
                 section=0,
-            ),
+            )
         )
 
     def open_document(self, fileURL):

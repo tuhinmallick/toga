@@ -27,11 +27,7 @@ class LeafNodeTests(TestCase):
 
     def test_iterate_children(self):
         "Children of a node can be iterated over -- should have no children"
-        result = 0
-
-        for child in self.example:
-            result += child.val2
-
+        result = sum(child.val2 for child in self.example)
         self.assertEqual(result, 0)
 
 
@@ -122,11 +118,7 @@ class NodeTests(TestCase):
 
     def test_iterate_children(self):
         "Children of a node can be iterated over"
-        result = 0
-
-        for child in self.parent:
-            result += child.val2
-
+        result = sum(child.val2 for child in self.parent)
         self.assertEqual(result, 33)
 
 
@@ -341,10 +333,7 @@ class TreeSourceTests(TestCase):
             accessors=["val1", "val2"],
         )
 
-        result = 0
-        for root in source:
-            result += root.val2
-
+        result = sum(root.val2 for root in source)
         self.assertEqual(result, 666)
 
     def test_insert_root_args(self):

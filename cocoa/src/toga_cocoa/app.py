@@ -72,7 +72,7 @@ class AppDelegate(NSObject):
 
     @objc_method
     def application_openFiles_(self, app, filenames) -> None:
-        for i in range(0, len(filenames)):
+        for i in range(len(filenames)):
             filename = filenames[i]
             # If you start your Toga application as `python myapp.py` or
             # `myapp.py`, the name of the Python script is included as a
@@ -139,23 +139,22 @@ class App:
         formal_name = self.interface.formal_name
 
         self.interface.commands.add(
-            # ---- App menu -----------------------------------
             toga.Command(
                 lambda _: self.interface.about(),
-                "About " + formal_name,
+                f"About {formal_name}",
                 group=toga.Group.APP,
             ),
             toga.Command(
                 None,
                 "Preferences",
-                shortcut=toga.Key.MOD_1 + ",",
+                shortcut=f"{toga.Key.MOD_1},",
                 group=toga.Group.APP,
                 section=20,
             ),
             toga.Command(
                 NativeHandler(SEL("hide:")),
-                "Hide " + formal_name,
-                shortcut=toga.Key.MOD_1 + "h",
+                f"Hide {formal_name}",
+                shortcut=f"{toga.Key.MOD_1}h",
                 group=toga.Group.APP,
                 order=0,
                 section=sys.maxsize - 1,
@@ -175,19 +174,17 @@ class App:
                 order=2,
                 section=sys.maxsize - 1,
             ),
-            # Quit should always be the last item, in a section on its own
             toga.Command(
                 lambda _: self.interface.exit(),
-                "Quit " + formal_name,
-                shortcut=toga.Key.MOD_1 + "q",
+                f"Quit {formal_name}",
+                shortcut=f"{toga.Key.MOD_1}q",
                 group=toga.Group.APP,
                 section=sys.maxsize,
             ),
-            # ---- Edit menu ----------------------------------
             toga.Command(
                 NativeHandler(SEL("undo:")),
                 "Undo",
-                shortcut=toga.Key.MOD_1 + "z",
+                shortcut=f"{toga.Key.MOD_1}z",
                 group=toga.Group.EDIT,
                 order=10,
             ),
@@ -201,7 +198,7 @@ class App:
             toga.Command(
                 NativeHandler(SEL("cut:")),
                 "Cut",
-                shortcut=toga.Key.MOD_1 + "x",
+                shortcut=f"{toga.Key.MOD_1}x",
                 group=toga.Group.EDIT,
                 section=10,
                 order=10,
@@ -209,7 +206,7 @@ class App:
             toga.Command(
                 NativeHandler(SEL("copy:")),
                 "Copy",
-                shortcut=toga.Key.MOD_1 + "c",
+                shortcut=f"{toga.Key.MOD_1}c",
                 group=toga.Group.EDIT,
                 section=10,
                 order=20,
@@ -217,7 +214,7 @@ class App:
             toga.Command(
                 NativeHandler(SEL("paste:")),
                 "Paste",
-                shortcut=toga.Key.MOD_1 + "v",
+                shortcut=f"{toga.Key.MOD_1}v",
                 group=toga.Group.EDIT,
                 section=10,
                 order=30,
@@ -240,12 +237,11 @@ class App:
             toga.Command(
                 NativeHandler(SEL("selectAll:")),
                 "Select All",
-                shortcut=toga.Key.MOD_1 + "a",
+                shortcut=f"{toga.Key.MOD_1}a",
                 group=toga.Group.EDIT,
                 section=10,
                 order=60,
             ),
-            # ---- Help menu ----------------------------------
             toga.Command(
                 lambda _: self.interface.visit_homepage(),
                 "Visit homepage",
@@ -289,11 +285,7 @@ class App:
                 # Native handlers can be invoked directly as menu actions.
                 # Standard wrapped menu items have a `_raw` attribute,
                 # and are invoked using the selectMenuItem:
-                if hasattr(cmd.action, "_raw"):
-                    action = SEL("selectMenuItem:")
-                else:
-                    action = cmd.action
-
+                action = SEL("selectMenuItem:") if hasattr(cmd.action, "_raw") else cmd.action
                 item = NSMenuItem.alloc().initWithTitle(
                     cmd.text,
                     action=action,
@@ -428,10 +420,10 @@ class DocumentApp(App):
             toga.Command(
                 lambda _: self.select_file(),
                 text="Open...",
-                shortcut=toga.Key.MOD_1 + "o",
+                shortcut=f"{toga.Key.MOD_1}o",
                 group=toga.Group.FILE,
                 section=0,
-            ),
+            )
         )
 
     def select_file(self, **kwargs):

@@ -24,9 +24,7 @@ def string_from_decimal(d):
     This way, Toga's `NumericInput` can pass us a `None` or `Decimal`,
     and we can always place a String in the Android `EditText`.
     """
-    if d is None:
-        return ""
-    return str(d)
+    return "" if d is None else str(d)
 
 
 class TogaNumberInputWatcher(TextWatcher):

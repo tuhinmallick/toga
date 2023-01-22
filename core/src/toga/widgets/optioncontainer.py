@@ -164,9 +164,8 @@ class OptionList:
                     "Cannot specify both `label` and `text`; "
                     "`label` has been deprecated, use `text`"
                 )
-            else:
-                warnings.warn("label has been renamed text", DeprecationWarning)
-                text = label
+            warnings.warn("label has been renamed text", DeprecationWarning)
+            text = label
         elif text is NOT_PROVIDED:
             missing_arguments.append("text")
 
@@ -181,10 +180,7 @@ class OptionList:
             )
         elif len(missing_arguments) > 1:
             raise TypeError(
-                "OptionList.append missing {} required positional arguments: {}".format(
-                    len(missing_arguments),
-                    " and ".join([f"'{name}'" for name in missing_arguments]),
-                )
+                f"""OptionList.append missing {len(missing_arguments)} required positional arguments: {" and ".join([f"'{name}'" for name in missing_arguments])}"""
             )
 
         ##################################################################
@@ -219,9 +215,8 @@ class OptionList:
                     "Cannot specify both `label` and `text`; "
                     "`label` has been deprecated, use `text`"
                 )
-            else:
-                warnings.warn("label has been renamed text", DeprecationWarning)
-                text = label
+            warnings.warn("label has been renamed text", DeprecationWarning)
+            text = label
         elif text is NOT_PROVIDED:
             missing_arguments.append("text")
 
@@ -236,10 +231,7 @@ class OptionList:
             )
         elif len(missing_arguments) > 1:
             raise TypeError(
-                "OptionList.insert missing {} required positional arguments: {}".format(
-                    len(missing_arguments),
-                    " and ".join([f"'{name}'" for name in missing_arguments]),
-                )
+                f"""OptionList.insert missing {len(missing_arguments)} required positional arguments: {" and ".join([f"'{name}'" for name in missing_arguments])}"""
             )
 
         ##################################################################
@@ -386,9 +378,8 @@ class OptionContainer(Widget):
                     "Cannot specify both `label` and `text`; "
                     "`label` has been deprecated, use `text`"
                 )
-            else:
-                warnings.warn("label has been renamed text", DeprecationWarning)
-                text = label
+            warnings.warn("label has been renamed text", DeprecationWarning)
+            text = label
         elif text is NOT_PROVIDED:
             missing_arguments.append("text")
 
@@ -403,10 +394,7 @@ class OptionContainer(Widget):
             )
         elif len(missing_arguments) > 1:
             raise TypeError(
-                "OptionContainer.add missing {} required positional arguments: {}".format(
-                    len(missing_arguments),
-                    " and ".join([f"'{name}'" for name in missing_arguments]),
-                )
+                f"""OptionContainer.add missing {len(missing_arguments)} required positional arguments: {" and ".join([f"'{name}'" for name in missing_arguments])}"""
             )
 
         ##################################################################

@@ -12,12 +12,12 @@ class Table(Widget):
         self._cache = []
         self._first_item = 0
 
-        dataColumn = []
-        for i, (heading, accessor) in enumerate(
-            zip(self.interface.headings, self.interface._accessors)
-        ):
-            dataColumn.append(self._create_column(heading, accessor))
-
+        dataColumn = [
+            self._create_column(heading, accessor)
+            for heading, accessor in zip(
+                self.interface.headings, self.interface._accessors
+            )
+        ]
         self.native.FullRowSelect = True
         self.native.MultiSelect = self.interface.multiple_select
         self.native.DoubleBuffered = True
@@ -69,12 +69,12 @@ class Table(Widget):
         self._cache = []
 
         # Fill the cache with the appropriate ListViewItems.
-        for i in range(new_length):
-            self._cache.append(
-                WinForms.ListViewItem(
-                    self.row_data(self.interface.data[i + self._first_item])
-                )
+        self._cache.extend(
+            WinForms.ListViewItem(
+                self.row_data(self.interface.data[i + self._first_item])
             )
+            for i in range(new_length)
+        )
 
     def winforms_item_selection_changed(self, sender, e):
         if self.interface.on_select:
@@ -105,9 +105,7 @@ class Table(Widget):
         def strip_icon(item, attr):
             val = getattr(item, attr, self.interface.missing_value)
 
-            if isinstance(val, tuple):
-                return str(val[1])
-            return str(val)
+            return str(val[1]) if isinstance(val, tuple) else str(val)
 
         return [strip_icon(item, attr) for attr in self.interface._accessors]
 
@@ -133,13 +131,12 @@ class Table(Widget):
         selected_indices = list(self.native.SelectedIndices)
 
         if self.interface.multiple_select:
-            selected = [
+            return [
                 row
                 for i, row in enumerate(self.interface.data)
                 if i in selected_indices
             ]
-            return selected
-        elif len(selected_indices) == 0:
+        elif not selected_indices:
             return None
         else:
             return self.interface.data[selected_indices[0]]

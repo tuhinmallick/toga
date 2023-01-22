@@ -53,9 +53,7 @@ class ScrollContainer(Widget):
     def set_vertical_position(self, vertical_position):
         if vertical_position < 0 or vertical_position > self.maximum_vertical_position:
             raise ValueError(
-                "Vertical position should be between 0 and {}, got {}".format(
-                    self.maximum_vertical_position, vertical_position
-                )
+                f"Vertical position should be between 0 and {self.maximum_vertical_position}, got {vertical_position}"
             )
         self.native.VerticalScroll.Value = vertical_position
         if self.interface.on_scroll is not None:
@@ -70,9 +68,7 @@ class ScrollContainer(Widget):
             or horizontal_position > self.maximum_horizontal_position
         ):
             raise ValueError(
-                "Horizontal position should be between 0 and {}, got {}".format(
-                    self.maximum_horizontal_position, horizontal_position
-                )
+                f"Horizontal position should be between 0 and {self.maximum_horizontal_position}, got {horizontal_position}"
             )
         self.native.HorizontalScroll.Value = horizontal_position
         if self.interface.on_scroll is not None:

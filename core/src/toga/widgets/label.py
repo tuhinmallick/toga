@@ -48,9 +48,6 @@ class Label(Widget):
 
     @text.setter
     def text(self, value):
-        if value is None:
-            self._text = ""
-        else:
-            self._text = str(value)
+        self._text = "" if value is None else str(value)
         self._impl.set_text(value)
         self._impl.rehint()

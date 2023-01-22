@@ -5,9 +5,10 @@ import re
 from setuptools import setup, find_packages
 
 with io.open('toga_win32/__init__.py', encoding='utf8') as version_file:
-    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file.read(), re.M)
-    if version_match:
-        version = version_match.group(1)
+    if version_match := re.search(
+        r"^__version__ = ['\"]([^'\"]*)['\"]", version_file.read(), re.M
+    ):
+        version = version_match[1]
     else:
         raise RuntimeError("Unable to find version string.")
 
@@ -26,12 +27,8 @@ setup(
     url='http://beeware.org/toga',
     packages=find_packages(exclude='tests'),
     python_requires='>=3.5',
-    install_requires=[
-        'toga-core==%s' % version,
-    ],
-    tests_require=[
-        'toga-dummy==%s' % version
-    ],
+    install_requires=[f'toga-core=={version}'],
+    tests_require=[f'toga-dummy=={version}'],
     license='New BSD',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

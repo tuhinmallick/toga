@@ -87,15 +87,14 @@ class App:
         self.interface.commands.add(
             Command(
                 lambda _: self.interface.about(),
-                "About " + self.interface.name,
+                f"About {self.interface.name}",
                 group=toga.Group.HELP,
             ),
             Command(None, "Preferences", group=toga.Group.APP),
-            # Quit should always be the last item, in a section on it's own
             Command(
                 lambda _: self.interface.exit(),
-                "Quit " + self.interface.name,
-                shortcut=toga.Key.MOD_1 + "q",
+                f"Quit {self.interface.name}",
+                shortcut=f"{toga.Key.MOD_1}q",
                 group=toga.Group.APP,
                 section=sys.maxsize,
             ),
@@ -141,9 +140,7 @@ class App:
         menubar = Gio.Menu()
         section = None
         for cmd in self.interface.commands:
-            if cmd == GROUP_BREAK:
-                section = None
-            elif cmd == SECTION_BREAK:
+            if cmd in [GROUP_BREAK, SECTION_BREAK]:
                 section = None
             else:
                 submenu = self._submenu(cmd.group, menubar)
@@ -152,7 +149,7 @@ class App:
                     section = Gio.Menu()
                     submenu.append_section(None, section)
 
-                cmd_id = "command-%s" % id(cmd)
+                cmd_id = f"command-{id(cmd)}"
                 action = Gio.SimpleAction.new(cmd_id, None)
                 if cmd.action:
                     action.connect("activate", gtk_menu_item_activate(cmd))
@@ -162,7 +159,7 @@ class App:
                 self._menu_items[action] = cmd
                 self.native.add_action(action)
 
-                item = Gio.MenuItem.new(cmd.text, "app." + cmd_id)
+                item = Gio.MenuItem.new(cmd.text, f"app.{cmd_id}")
                 if cmd.shortcut:
                     item.set_attribute_value(
                         "accel", GLib.Variant("s", gtk_accel(cmd.shortcut))
@@ -255,10 +252,10 @@ class DocumentApp(App):
             toga.Command(
                 self.open_file,
                 text="Open...",
-                shortcut=toga.Key.MOD_1 + "o",
+                shortcut=f"{toga.Key.MOD_1}o",
                 group=toga.Group.FILE,
                 section=0,
-            ),
+            )
         )
 
     def gtk_startup(self, data=None):

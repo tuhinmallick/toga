@@ -12,7 +12,7 @@ def async_test(coroutine):
 
 def order_test(*items):
     def _test(self):
-        for i in range(0, len(items) - 1):
+        for i in range(len(items) - 1):
             for j in range(i + 1, len(items)):
                 self.assertLess(items[i], items[j])
                 self.assertGreater(items[j], items[i])

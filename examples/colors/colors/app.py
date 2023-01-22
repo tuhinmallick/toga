@@ -7,20 +7,12 @@ from toga.style import Pack
 
 class ColorsApp(toga.App):
     def change_color_foreground(self, widget):
-        if widget.id == "reset":
-            color = None
-        else:
-            color = widget.id
-
+        color = None if widget.id == "reset" else widget.id
         for widget in self.example_widgets:
             widget.style.color = color
 
     def change_color_background(self, widget):
-        if widget.id == "reset":
-            color = None
-        else:
-            color = widget.id
-
+        color = None if widget.id == "reset" else widget.id
         for widget in self.example_widgets:
             widget.style.background_color = color
 
@@ -73,7 +65,7 @@ class ColorsApp(toga.App):
             children=[toga.Label("Scrollcontainer example! filled with labels.")],
             style=Pack(direction=COLUMN),
         )
-        for x in range(20):
+        for _ in range(20):
             temp_box.add(toga.Label("Label"))
         scroll_container.content = temp_box
 

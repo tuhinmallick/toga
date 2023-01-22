@@ -29,10 +29,9 @@ class App:
         )
 
     def get_urls(self):
-        urlpatterns = [
+        return [
             re_path(r'(?P<state>.*)$', self.app, name='app'),
         ]
-        return urlpatterns
 
     @property
     def urls(self):

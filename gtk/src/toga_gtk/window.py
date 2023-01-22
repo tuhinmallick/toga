@@ -16,15 +16,11 @@ class GtkViewport:
     @property
     def width(self):
         # Treat `native=None` as a 0x0 viewport.
-        if self.native is None:
-            return 0
-        return self.native.get_allocated_width()
+        return 0 if self.native is None else self.native.get_allocated_width()
 
     @property
     def height(self):
-        if self.native is None:
-            return 0
-        return self.native.get_allocated_height()
+        return 0 if self.native is None else self.native.get_allocated_height()
 
 
 class Window:
@@ -143,13 +139,10 @@ class Window:
         return self.native.get_property("visible")
 
     def gtk_delete_event(self, widget, data):
-        if self._is_closing:
+        if self._is_closing or not self.interface.on_close:
             should_close = True
-        elif self.interface.on_close:
-            should_close = self.interface.on_close(self.interface.app)
         else:
-            should_close = True
-
+            should_close = self.interface.on_close(self.interface.app)
         # Return value of the GTK on_close handler indicates
         # whether the event has been fully handled. Returning
         # False indicates the event handling is *not* complete,

@@ -7,13 +7,10 @@ from setuptools import setup
 # we can't import toga_django to compute the version;
 # and to support versioned subpackage dependencies
 with open('toga_django/__init__.py', encoding='utf8') as version_file:
-    version_match = re.search(
-        r"^__version__ = ['\"]([^'\"]*)['\"]",
-        version_file.read(),
-        re.M
-    )
-    if version_match:
-        version = version_match.group(1)
+    if version_match := re.search(
+        r"^__version__ = ['\"]([^'\"]*)['\"]", version_file.read(), re.M
+    ):
+        version = version_match[1]
     else:
         raise RuntimeError("Unable to find version string.")
 
@@ -23,6 +20,6 @@ setup(
     install_requires=[
         'django~=3.0',
         'django-environ==0.4.1',
-        'toga-web==%s' % version,
+        f'toga-web=={version}',
     ],
 )

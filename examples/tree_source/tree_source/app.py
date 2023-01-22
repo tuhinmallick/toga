@@ -92,7 +92,7 @@ class Node:
 
     def load_children(self):
         try:
-            sub_paths = [p for p in self.path.iterdir()]
+            sub_paths = list(self.path.iterdir())
             self._children = [Node(p, self) for p in sub_paths]
         except NotADirectoryError:
             self._children = []

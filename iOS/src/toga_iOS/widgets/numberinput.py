@@ -36,13 +36,13 @@ class TogaNumericTextField(UITextField):
     ) -> bool:
         # chars will be zero length in the case of a deletion
         # otherwise, accept any number, or '.' (as long as this is the first one)
-        if (
-            len(chars) == 0
-            or chars.isdigit()
-            or (chars == "." and "." not in self.text)
-        ):
-            return True
-        return False
+        return bool(
+            (
+                len(chars) == 0
+                or chars.isdigit()
+                or (chars == "." and "." not in self.text)
+            )
+        )
 
 
 class NumberInput(Widget):

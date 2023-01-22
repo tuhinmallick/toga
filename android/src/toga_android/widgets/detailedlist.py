@@ -121,7 +121,7 @@ class DetailedList(Widget):
 
         # Create top & bottom text; add them to layout.
         top_text = TextView(self._native_activity)
-        top_text.setText(str(getattr(self.interface.data[i], "title", "")))
+        top_text.setText(getattr(self.interface.data[i], "title", ""))
         top_text.setTextSize(20.0)
         top_text.setTextColor(
             self._native_activity.getResources().getColor(R__color.black)
@@ -130,7 +130,7 @@ class DetailedList(Widget):
         bottom_text.setTextColor(
             self._native_activity.getResources().getColor(R__color.black)
         )
-        bottom_text.setText(str(getattr(self.interface.data[i], "subtitle", "")))
+        bottom_text.setText(getattr(self.interface.data[i], "subtitle", ""))
         bottom_text.setTextSize(16.0)
         top_text_params = LinearLayout__LayoutParams(
             RelativeLayout__LayoutParams.WRAP_CONTENT,

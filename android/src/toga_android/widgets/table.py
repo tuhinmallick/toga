@@ -174,15 +174,15 @@ class Table(Widget):
         if self.interface.data is None or self.interface._accessors is None:
             return None
         row_object = self.interface.data[row_index]
-        value = getattr(row_object, self.interface._accessors[col_index])
-        return value
+        return getattr(row_object, self.interface._accessors[col_index])
 
     def get_selection(self):
-        selection = []
-        for row_index in range(len(self.interface.data)):
-            if row_index in self.selection:
-                selection.append(self.selection[row_index])
-        if len(selection) == 0:
+        selection = [
+            self.selection[row_index]
+            for row_index in range(len(self.interface.data))
+            if row_index in self.selection
+        ]
+        if not selection:
             selection = None
         elif not self.interface.multiple_select:
             selection = selection[0]

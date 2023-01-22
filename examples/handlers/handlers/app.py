@@ -18,9 +18,7 @@ class HandlerApp(toga.App):
     def do_function(self, widget, **kwargs):
         "A normal functional handler."
         # This handler is invoked, and returns immediately
-        self.function_label.text = "Here's a random number: {}".format(
-            random.randint(0, 100)
-        )
+        self.function_label.text = f"Here's a random number: {random.randint(0, 100)}"
 
     def do_generator(self, widget, **kwargs):
         "A generator-based handler"

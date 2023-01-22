@@ -29,10 +29,7 @@ class NoDefault:
     """
 
     def __eq__(self, other):
-        if isinstance(other, NoDefault):
-            return True
-        else:
-            return False
+        return isinstance(other, NoDefault)
 
     def __repr__(self):
         return "no_default"
@@ -58,12 +55,11 @@ class DefinitionExtractor:
         self.exists = os.path.isfile(path)
         self._classes = {}
         self._methods = defaultdict(dict)
-        self.platform = platform_category if platform_category else None
+        self.platform = platform_category or None
 
         if self.exists:
             # open the file and parse it with the ast module.
-            with open(path) as f:
-                lines = f.read()
+            lines = Path(path).read_text()
             self.tree = ast.parse(lines)
             self._extract_file()
 
@@ -118,11 +114,7 @@ class DefinitionExtractor:
 
     @staticmethod
     def _get_function_defaults(node, kwonlyargs=False):
-        if kwonlyargs:
-            to_extract = node.kw_defaults
-        else:
-            to_extract = node.defaults
-
+        to_extract = node.kw_defaults if kwonlyargs else node.defaults
         defaults = []
         for default in to_extract:
             if isinstance(default, ast.NameConstant):
@@ -131,7 +123,7 @@ class DefinitionExtractor:
                 defaults.append(default.s)
             elif isinstance(default, ast.Num):
                 defaults.append(default.n)
-            elif isinstance(default, ast.Tuple) or isinstance(default, ast.List):
+            elif isinstance(default, (ast.Tuple, ast.List)):
                 defaults.append(default.elts)
             elif isinstance(default, ast.Call):
                 defaults.append(default.func)
@@ -141,8 +133,7 @@ class DefinitionExtractor:
                 defaults.append(default.id)
             else:
                 raise RuntimeWarning(
-                    'ast classes of type "{}" can not be handled at the moment. '
-                    "Please implement to make this warning disappear.".format(default)
+                    f'ast classes of type "{default}" can not be handled at the moment. Please implement to make this warning disappear.'
                 )
         return defaults
 
@@ -155,13 +146,14 @@ class DefinitionExtractor:
         """
         for class_name in self._classes:
             for node in ast.walk(self._classes[class_name]):
-                if isinstance(node, ast.FunctionDef):
-                    if self.is_required_for_platform(node):
-                        function_id = f"{class_name}.{node.name}"
-                        self._methods[function_id]["node"] = node
-                        self._methods[function_id][
-                            "arguments"
-                        ] = self._extract_function_signature(node)
+                if isinstance(
+                    node, ast.FunctionDef
+                ) and self.is_required_for_platform(node):
+                    function_id = f"{class_name}.{node.name}"
+                    self._methods[function_id]["node"] = node
+                    self._methods[function_id][
+                        "arguments"
+                    ] = self._extract_function_signature(node)
 
     def _extract_function_signature(self, node):
         for node in ast.walk(node):
@@ -214,13 +206,14 @@ class DefinitionExtractor:
             Does not return inherited methods. Only methods that are present in the class and the actual .py file.
         """
         methods = []
-        if self.exists:
-            if class_name in self._classes.keys():
-                class_node = self._classes[class_name]
-                for node in ast.walk(class_node):
-                    if isinstance(node, ast.FunctionDef):
-                        if self.is_required_for_platform(node):
-                            methods.append(node.name)
+        if self.exists and class_name in self._classes.keys():
+            class_node = self._classes[class_name]
+            methods.extend(
+                node.name
+                for node in ast.walk(class_node)
+                if isinstance(node, ast.FunctionDef)
+                and self.is_required_for_platform(node)
+            )
         return methods
 
 
@@ -291,7 +284,7 @@ def create_impl_tests(root):
         else:
             path = os.path.join(root, f"{name}.py")
 
-        tests.update(make_toga_impl_check_class(path, dummy_path, platform_category))
+        tests |= make_toga_impl_check_class(path, dummy_path, platform_category)
     return tests
 
 
@@ -318,7 +311,7 @@ def collect_dummy_files(required_files):
 
 def make_test_function(element, element_list, error_msg=None):
     def fn(self):
-        self.assertIn(element, element_list, msg=error_msg if error_msg else fn.__doc__)
+        self.assertIn(element, element_list, msg=error_msg or fn.__doc__)
 
     return fn
 
@@ -331,9 +324,7 @@ def make_test_class(path, cls, expected, actual, skip):
         test_class = unittest.skip(skip)(test_class)
 
     fn = make_test_function(cls, actual.class_names)
-    fn.__doc__ = (
-        "Expect class {} to be defined in {}, to be consistent with dummy implementation"
-    ).format(cls, path)
+    fn.__doc__ = f"Expect class {cls} to be defined in {path}, to be consistent with dummy implementation"
     test_class.test_class_exists = fn
 
     for method in expected.methods_of_class(cls):
@@ -367,9 +358,7 @@ def make_test_class(path, cls, expected, actual, skip):
             # *varargs
             if method_def.vararg:
                 vararg = method_def.vararg
-                actual_vararg = (
-                    actual_method_def.vararg if actual_method_def.vararg else []
-                )
+                actual_vararg = actual_method_def.vararg or []
                 fn = make_test_function(vararg, actual_vararg)
                 fn.__doc__ = f"The vararg {cls}.{method}(..., *{vararg}, ...) exists"
                 setattr(test_class, f"test_{method}_vararg_{vararg}", fn)
@@ -377,14 +366,11 @@ def make_test_class(path, cls, expected, actual, skip):
             # **kwarg
             if method_def.kwarg:
                 kwarg = method_def.kwarg
-                actual_kwarg = (
-                    actual_method_def.kwarg if actual_method_def.kwarg else []
-                )
+                actual_kwarg = actual_method_def.kwarg or []
                 fn = make_test_function(
                     kwarg,
                     actual_kwarg,
-                    error_msg="The method does not take kwargs or the "
-                    'variable is not named "{}".'.format(kwarg),
+                    error_msg=f'The method does not take kwargs or the variable is not named "{kwarg}".',
                 )
                 fn.__doc__ = (
                     f"The kw argument {cls}.{method}(..., **{kwarg}, ...) exists"
@@ -414,11 +400,9 @@ def make_toga_impl_check_class(path, dummy_path, platform):
     expected = DefinitionExtractor(dummy_path, platform)
     if os.path.isfile(path):
         skip = None
-        actual = DefinitionExtractor(path)
     else:
         skip = f"Implementation file {path[len(prefix):]} does not exist"
-        actual = DefinitionExtractor(path)
-
+    actual = DefinitionExtractor(path)
     test_classes = {}
 
     for cls in expected.class_names:

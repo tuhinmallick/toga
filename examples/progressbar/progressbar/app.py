@@ -111,8 +111,8 @@ class ProgressBarApp(toga.App):
             ],
         )
 
-        print("is determinate: " + str(self.progress_adder.is_determinate))
-        print("is running: " + str(self.progress_adder.is_running))
+        print(f"is determinate: {str(self.progress_adder.is_determinate)}")
+        print(f"is running: {str(self.progress_adder.is_running)}")
         self.main_window.show()
 
     async def auto_progress(self, button, **kw):
@@ -130,18 +130,15 @@ class ProgressBarApp(toga.App):
             self.progress_adder.value -= 0.1 * self.progress_adder.max
 
     def toggle_indeterminate(self, switch, **kw):
-        if switch.value:
-            self.progress_adder.max = None
-        else:
-            self.progress_adder.max = MAX_PROGRESSBAR_VALUE
-        print("is determinate: " + str(self.progress_adder.is_determinate))
+        self.progress_adder.max = None if switch.value else MAX_PROGRESSBAR_VALUE
+        print(f"is determinate: {str(self.progress_adder.is_determinate)}")
 
     def toggle_running(self, switch, **kw):
         if switch.value:
             self.progress_adder.start()
         else:
             self.progress_adder.stop()
-        print("is running: " + str(self.progress_adder.is_running))
+        print(f"is running: {str(self.progress_adder.is_running)}")
 
 
 def main():

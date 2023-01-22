@@ -200,10 +200,7 @@ class TogaDetailedCell(NSTextFieldCell):
             if self.isHighlighted():
                 primaryColor = NSColor.alternateSelectedControlTextColor
             else:
-                if False:
-                    primaryColor = NSColor.disabledControlTextColor
-                else:
-                    primaryColor = NSColor.textColor
+                primaryColor = NSColor.textColor
 
             textAttributes = NSMutableDictionary.alloc().init()
             textAttributes[NSForegroundColorAttributeName] = primaryColor
@@ -219,10 +216,7 @@ class TogaDetailedCell(NSTextFieldCell):
             if self.isHighlighted():
                 primaryColor = NSColor.alternateSelectedControlTextColor
             else:
-                if False:
-                    primaryColor = NSColor.disabledControlTextColor
-                else:
-                    primaryColor = NSColor.textColor
+                primaryColor = NSColor.textColor
 
             textAttributes = NSMutableDictionary.alloc().init()
             textAttributes[NSForegroundColorAttributeName] = primaryColor
